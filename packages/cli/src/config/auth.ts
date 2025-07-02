@@ -7,7 +7,7 @@
 import { AuthType } from 'writer-cli-core';
 import { loadEnvironment } from './config.js';
 
-export const validateAuthMethod = (authMethod: string): string | null => {
+export const validateAuthMethod = (authMethod: AuthType | string): string | null => {
   loadEnvironment();
   if (authMethod === AuthType.LOGIN_WITH_GOOGLE) {
     return null;
@@ -16,6 +16,27 @@ export const validateAuthMethod = (authMethod: string): string | null => {
   if (authMethod === AuthType.USE_GEMINI) {
     if (!process.env.GEMINI_API_KEY) {
       return 'GEMINI_API_KEY environment variable not found. Add that to your .env and try again, no reload needed!';
+    }
+    return null;
+  }
+
+  if (authMethod === AuthType.USE_OPENROUTER) {
+    if (!process.env.OPENROUTER_API_KEY) {
+      return 'OPENROUTER_API_KEY environment variable not found. Add that to your .env and try again, no reload needed!';
+    }
+    return null;
+  }
+
+  if (authMethod === AuthType.USE_ANTHROPIC) {
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return 'ANTHROPIC_API_KEY environment variable not found. Add that to your .env and try again, no reload needed!';
+    }
+    return null;
+  }
+
+  if (authMethod === AuthType.USE_OPENAI) {
+    if (!process.env.OPENAI_API_KEY) {
+      return 'OPENAI_API_KEY environment variable not found. Add that to your .env and try again, no reload needed!';
     }
     return null;
   }
