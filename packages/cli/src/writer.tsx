@@ -37,6 +37,7 @@ import {
 } from 'writer-cli-core';
 import { validateAuthMethod } from './config/auth.js';
 import { setMaxSizedBoxDebugging } from './ui/components/shared/MaxSizedBox.js';
+import { isWriterCommand, parseWriterCommands } from './commands/index.js';
 
 function getNodeMemoryArgs(config: Config): string[] {
   const totalMemoryMB = os.totalmem() / (1024 * 1024);
@@ -84,6 +85,18 @@ async function relaunchWithAdditionalArgs(additionalArgs: string[]) {
 
 export async function main() {
   const workspaceRoot = process.cwd();
+  
+  // Check if this is a writer command first (before loading heavy config)
+  if (isWriterCommand(process.argv.slice(2))) {
+    try {
+      await parseWriterCommands();
+      return;
+    } catch (error) {
+      console.error('Command failed:', error instanceof Error ? error.message : error);
+      process.exit(1);
+    }
+  }
+  
   const settings = loadSettings(workspaceRoot);
 
   await cleanupCheckpoints();

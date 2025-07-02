@@ -37,13 +37,53 @@ export interface ProjectConfig {
   settings: ProjectSettings;
 }
 
+export type ProjectType = 'novel' | 'screenplay' | 'academic' | 'technical' | 'blog' | 'poetry';
+
+export interface Chapter {
+  number: number;
+  title: string;
+  filename: string;
+  wordCount?: number;
+}
+
+export interface Character {
+  name: string;
+  role?: string;
+  description?: string;
+  traits?: string[];
+  backstory?: string;
+}
+
 export class ProjectManager {
   private projectPath: string;
   private configPath: string;
 
-  constructor(projectPath: string) {
-    this.projectPath = projectPath;
-    this.configPath = join(projectPath, '.writer', 'config.json');
+  constructor(projectPath?: string) {
+    this.projectPath = projectPath || process.cwd();
+    this.configPath = join(this.projectPath, '.claude', 'config.json');
+  }
+
+  async isProjectDirectory(path: string): Promise<boolean> {
+    try {
+      await access(join(path, '.claude', 'config.json'));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async initializeProject(path: string, config: {
+    title: string;
+    author: string;
+    type: ProjectType;
+    targetWordCount?: number;
+    created: string;
+    lastModified: string;
+  }): Promise<void> {
+    this.projectPath = path;
+    this.configPath = join(path, '.claude', 'config.json');
+    
+    await this.initProject(config);
   }
 
   async initProject(config: {
@@ -144,7 +184,7 @@ export class ProjectManager {
   }
 
   private async ensureDirectoryStructure(type: string): Promise<void> {
-    const directories = ['.writer', 'chapters', 'research', 'drafts', 'exports'];
+    const directories = ['.claude', 'chapters', 'research', 'drafts', 'exports'];
     
     if (type === 'screenplay') {
       directories.push('scenes', 'treatments');
@@ -242,10 +282,91 @@ export class ProjectManager {
     };
   }
 
-  async listChapters(): Promise<string[]> {
+  async listChapters(path?: string): Promise<Chapter[]> {
+    if (path) {
+      this.projectPath = path;
+      this.configPath = join(path, '.claude', 'config.json');
+    }
+    
     // This would scan the chapters directory
     // For now, return empty array
     return [];
+  }
+
+  async addChapter(path: string, chapter: { title: string; number?: number }): Promise<void> {
+    this.projectPath = path;
+    this.configPath = join(path, '.claude', 'config.json');
+    
+    const config = await this.loadConfig();
+    if (!config) throw new Error('No project found');
+
+    // Auto-assign chapter number if not provided
+    const chapterNumber = chapter.number || (await this.getNextChapterNumber());
+    
+    await this.createChapter(chapter.title, chapterNumber);
+  }
+
+  async removeChapter(path: string, number: number): Promise<void> {
+    this.projectPath = path;
+    this.configPath = join(path, '.claude', 'config.json');
+    
+    // Implementation would remove chapter file and update config
+    // For now, just stub
+  }
+
+  async listCharacters(path?: string): Promise<Character[]> {
+    if (path) {
+      this.projectPath = path;
+      this.configPath = join(path, '.claude', 'config.json');
+    }
+    
+    const config = await this.loadConfig();
+    if (!config) return [];
+
+    return config.characters.map(c => ({
+      name: c.name,
+      role: c.role,
+      description: c.description,
+      traits: [],
+      backstory: ''
+    }));
+  }
+
+  async addCharacterToProject(path: string, character: Character): Promise<void> {
+    this.projectPath = path;
+    this.configPath = join(path, '.claude', 'config.json');
+    
+    await this.addCharacter(character.name, character.role, character.description);
+  }
+
+  async updateCharacter(path: string, name: string, updates: Partial<Character>): Promise<void> {
+    this.projectPath = path;
+    this.configPath = join(path, '.claude', 'config.json');
+    
+    const config = await this.loadConfig();
+    if (!config) throw new Error('No project found');
+
+    const characterIndex = config.characters.findIndex(c => c.name === name);
+    if (characterIndex === -1) throw new Error('Character not found');
+
+    Object.assign(config.characters[characterIndex], updates);
+    await this.saveConfig(config);
+  }
+
+  async removeCharacter(path: string, name: string): Promise<void> {
+    this.projectPath = path;
+    this.configPath = join(path, '.claude', 'config.json');
+    
+    const config = await this.loadConfig();
+    if (!config) throw new Error('No project found');
+
+    config.characters = config.characters.filter(c => c.name !== name);
+    await this.saveConfig(config);
+  }
+
+  private async getNextChapterNumber(): Promise<number> {
+    const chapters = await this.listChapters();
+    return chapters.length + 1;
   }
 
   async createChapter(title: string, number?: number): Promise<string> {

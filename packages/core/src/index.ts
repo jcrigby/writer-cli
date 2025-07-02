@@ -59,3 +59,7 @@ export * from './tools/mcp-tool.js';
 // Export telemetry functions
 export * from './telemetry/index.js';
 export { sessionId } from './utils/session.js';
+
+// Export writing project management
+export * from './projects/projectManager.js';
+export * from './core/writingCommands.js';
