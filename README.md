@@ -1,142 +1,202 @@
-# Gemini CLI
+# Writer CLI
 
-[![Gemini CLI CI](https://github.com/google-gemini/gemini-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/google-gemini/gemini-cli/actions/workflows/ci.yml)
+A powerful command-line interface for writers that brings AI assistance directly to your terminal. Built on the Gemini CLI foundation, Writer CLI supports multiple AI models through OpenRouter, including Claude, GPT-4, and more.
 
-![Gemini CLI Screenshot](./docs/assets/gemini-screenshot.png)
+## Features
 
-This repository contains the Gemini CLI, a command-line AI workflow tool that connects to your
-tools, understands your code and accelerates your workflows.
+- **Multi-Model Support**: Use Claude 3.5, GPT-4, Gemini, and other models through OpenRouter
+- **Project Management**: Organize novels, screenplays, academic papers, technical docs, blogs, and poetry
+- **Writing Commands**: Write, revise, suggest improvements, brainstorm ideas
+- **Character & World Building**: Track characters, locations, and story elements
+- **Version Control**: Git integration for manuscript versioning
+- **Export Formats**: Generate PDFs, EPUB, DOCX, HTML from your manuscripts
+- **Context-Aware**: Maintains awareness of your characters, plot, and writing style
 
-With the Gemini CLI you can:
+## Installation
 
-- Query and edit large codebases in and beyond Gemini's 1M token context window.
-- Generate new apps from PDFs or sketches, using Gemini's multimodal capabilities.
-- Automate operational tasks, like querying pull requests or handling complex rebases.
-- Use tools and MCP servers to connect new capabilities, including [media generation with Imagen,
-  Veo or Lyria](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia)
-- Ground your queries with the [Google Search](https://ai.google.dev/gemini-api/docs/grounding)
-  tool, built in to Gemini.
-
-## Quickstart
-
-1. **Prerequisites:** Ensure you have [Node.js version 18](https://nodejs.org/en/download) or higher installed.
-2. **Run the CLI:** Execute the following command in your terminal:
-
-   ```bash
-   npx https://github.com/google-gemini/gemini-cli
-   ```
-
-   Or install it with:
-
-   ```bash
-   npm install -g @google/gemini-cli
-   gemini
-   ```
-
-3. **Pick a color theme**
-4. **Authenticate:** When prompted, sign in with your personal Google account. This will grant you up to 60 model requests per minute and 1,000 model requests per day using Gemini.
-
-You are now ready to use the Gemini CLI!
-
-### Use a Gemini API key:
-
-The Gemini API provides a free tier with [100 requets per day](https://ai.google.dev/gemini-api/docs/rate-limits#free-tier) using Gemini 2.5 Pro, control over which model you use, and access to higher rate limits (with a paid plan):
-
-1. Generate a key from [Google AI Studio](https://aistudio.google.com/apikey).
-2. Set it as an environment variable in your terminal. Replace `YOUR_API_KEY` with your generated key.
-
-   ```bash
-   export GEMINI_API_KEY="YOUR_API_KEY"
-   ```
-
-3. (Optionally) Upgrade your Gemini API project to a paid plan on the API key page (will automatically unlock [Tier 1 rate limits](https://ai.google.dev/gemini-api/docs/rate-limits#tier-1))
-
-For other authentication methods, including Google Workspace accounts, see the [authentication](./docs/cli/authentication.md) guide.
-
-## Examples
-
-Once the CLI is running, you can start interacting with Gemini from your shell.
-
-You can start a project from a new directory:
-
-```sh
-cd new-project/
-gemini
-> Write me a Gemini Discord bot that answers questions using a FAQ.md file I will provide
+```bash
+npm install -g writer-cli
 ```
 
-Or work with an existing project:
+## Quick Start
 
-```sh
-git clone https://github.com/google-gemini/gemini-cli
-cd gemini-cli
-gemini
-> Give me a summary of all of the changes that went in yesterday
+### 1. Set up API Key
+
+Get an API key from [OpenRouter](https://openrouter.ai/) and set it:
+
+```bash
+export OPENROUTER_API_KEY="your-api-key"
 ```
 
-### Next steps
-
-- Learn how to [contribute to or build from the source](./CONTRIBUTING.md).
-- Explore the available **[CLI Commands](./docs/cli/commands.md)**.
-- If you encounter any issues, review the **[Troubleshooting guide](./docs/troubleshooting.md)**.
-- For more comprehensive documentation, see the [full documentation](./docs/index.md).
-- Take a look at some [popular tasks](#popular-tasks) for more inspiration.
-
-### Troubleshooting
-
-Head over to the [troubleshooting](docs/troubleshooting.md) guide if you're
-having issues.
-
-## Popular tasks
-
-### Explore a new codebase
-
-Start by `cd`ing into an existing or newly-cloned repository and running `gemini`.
-
-```text
-> Describe the main pieces of this system's architecture.
+Or use direct provider keys:
+```bash
+export ANTHROPIC_API_KEY="your-anthropic-key"
+export OPENAI_API_KEY="your-openai-key"
 ```
 
-```text
-> What security mechanisms are in place?
+### 2. Initialize a Writing Project
+
+```bash
+# Create a new novel project
+writer init --type novel "My Great Novel"
+
+# Create a screenplay project
+writer init --type screenplay "My Movie Script"
+
+# Create an academic paper
+writer init --type academic "Research Paper"
 ```
 
-### Work with your existing code
+### 3. Start Writing
 
-```text
-> Implement a first draft for GitHub issue #123.
+```bash
+# Write a new chapter
+writer write "Write an opening chapter about a mysterious stranger arriving in town"
+
+# Continue writing from where you left off
+writer write --continue chapter1.md
+
+# Revise existing content
+writer revise --tone dramatic chapter1.md "Make the opening more suspenseful"
+
+# Get suggestions
+writer suggest --improve-dialogue chapter1.md
 ```
 
-```text
-> Help me migrate this codebase to the latest version of Java. Start with a plan.
+## Core Commands
+
+### Project Management
+```bash
+writer init --type <type> "<title>"          # Initialize new project
+writer chapter add "Chapter Title"           # Add new chapter
+writer character create "John Doe" --role protagonist
+writer location add "Castle Blackstone" --description "Ancient fortress"
+writer status                                # View project statistics
 ```
 
-### Automate your workflows
-
-Use MCP servers to integrate your local system tools with your enterprise collaboration suite.
-
-```text
-> Make me a slide deck showing the git history from the last 7 days, grouped by feature and team member.
+### Writing Assistance
+```bash
+writer write <instruction> [file]            # Write new content
+writer revise <file> <instruction>           # Revise existing content
+writer suggest --<type> <file>               # Get suggestions
+writer brainstorm "<topic>"                  # Brainstorm ideas
+writer analyze --<type> <file>               # Analyze writing
 ```
 
-```text
-> Make a full-screen web app for a wall display to show our most interacted-with GitHub issues.
+### File Management
+```bash
+writer export --format pdf                   # Export to PDF
+writer backup --create-tag "draft-v1"        # Create backup
+writer list chapters                         # List all chapters
 ```
 
-### Interact with your system
+## Configuration
 
-```text
-> Convert all the images in this directory to png, and rename them to use dates from the exif data.
+Create a `.writer/config.json` in your project:
+
+```json
+{
+  "model": "claude-3.5-sonnet",
+  "writing": {
+    "tone": "narrative",
+    "style": "literary",
+    "wordCountGoal": 80000
+  }
+}
 ```
 
-```text
-> Organise my PDF invoices by month of expenditure.
+### Available Models
+
+- `claude-3.5-sonnet` - Best for creative writing (default)
+- `claude-3-opus` - Advanced reasoning and analysis
+- `gpt-4-turbo` - Fast and versatile
+- `gpt-4o` - Optimized GPT-4
+- `gemini-pro` - Google's Gemini model
+
+Or use any OpenRouter model ID directly:
+```bash
+writer --model anthropic/claude-3.5-sonnet-20241022 write "..."
 ```
 
-### Uninstall
+## Project Structure
 
-Head over to the [Uninstall](docs/Uninstall.md) guide for uninstallation instructions.
+### Novel Project
+```
+my-novel/
+├── .writer/              # Project configuration
+│   ├── config.json
+│   ├── characters.json
+│   └── locations.json
+├── chapters/             # Chapter files
+│   ├── 01-beginning.md
+│   └── 02-conflict.md
+├── research/             # Research notes
+├── drafts/               # Version history
+└── exports/              # Generated files
+```
 
-## Terms of Service and Privacy Notice
+### Screenplay Project
+```
+my-screenplay/
+├── .writer/
+├── screenplay.fountain   # Main screenplay
+├── scenes/              # Individual scenes
+├── treatments/          # Synopses and treatments
+└── exports/
+```
 
-For details on the terms of service and privacy notice applicable to your use of Gemini CLI, see the [Terms of Service and Privacy Notice](./docs/tos-privacy.md).
+## Environment Variables
+
+- `OPENROUTER_API_KEY` - Your OpenRouter API key
+- `ANTHROPIC_API_KEY` - Direct Anthropic API key
+- `OPENAI_API_KEY` - Direct OpenAI API key
+- `WRITER_MODEL` - Default model to use
+- `WRITER_CONFIG_DIR` - Configuration directory (default: `.writer`)
+
+## Writing-Specific Features
+
+### Character Consistency
+The CLI maintains awareness of your characters across chapters:
+```bash
+writer character develop "Jane Smith" --add-backstory
+writer analyze --character chapter3.md
+```
+
+### World Building
+Track locations and maintain consistency:
+```bash
+writer location add "Mystic Forest" --notes "Dark, enchanted, dangerous"
+writer worldbuild --location "Mystic Forest" --add-details
+```
+
+### Style Analysis
+Get feedback on your writing style:
+```bash
+writer analyze --style chapter1.md
+writer analyze --pacing full-manuscript.md
+```
+
+## Tips for Best Results
+
+1. **Be Specific**: Give clear instructions for better results
+2. **Use Context**: The CLI remembers your characters and world
+3. **Iterate**: Use revise and suggest commands to refine
+4. **Back Up**: Regular git commits or backup tags
+5. **Experiment**: Try different models for different tasks
+
+## Differences from Original Gemini CLI
+
+- Multi-model support through OpenRouter
+- Writing-focused commands and workflows
+- Project types for different writing genres
+- Character and world-building databases
+- Export to publishing formats
+- Manuscript organization features
+
+## Contributing
+
+Contributions welcome! This is a fork of [Gemini CLI](https://github.com/google-gemini/gemini-cli) adapted for writers.
+
+## License
+
+Apache 2.0 - See LICENSE file for details.

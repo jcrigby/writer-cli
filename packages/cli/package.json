@@ -1,12 +1,12 @@
 {
-  "name": "@google/gemini-cli",
+  "name": "writer-cli",
   "version": "0.1.9",
-  "description": "Gemini CLI",
-  "repository": "google-gemini/gemini-cli",
+  "description": "Writer CLI",
+  "repository": "jcrigby/writer-cli",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "gemini": "dist/index.js"
+    "writer": "dist/index.js"
   },
   "scripts": {
     "build": "node ../../scripts/build_package.js",
@@ -29,7 +29,7 @@
     "sandboxImageUri": "gemini-cli-sandbox"
   },
   "dependencies": {
-    "@google/gemini-cli-core": "*",
+    "writer-cli-core": "*",
     "@types/update-notifier": "^6.0.8",
     "command-exists": "^1.2.9",
     "diff": "^7.0.0",
