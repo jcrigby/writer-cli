@@ -60,12 +60,12 @@ export class ProjectManager {
 
   constructor(projectPath?: string) {
     this.projectPath = projectPath || process.cwd();
-    this.configPath = join(this.projectPath, '.claude', 'config.json');
+    this.configPath = join(this.projectPath, '.writer', 'config.json');
   }
 
   async isProjectDirectory(path: string): Promise<boolean> {
     try {
-      await access(join(path, '.claude', 'config.json'));
+      await access(join(path, '.writer', 'config.json'));
       return true;
     } catch {
       return false;
@@ -81,7 +81,7 @@ export class ProjectManager {
     lastModified: string;
   }): Promise<void> {
     this.projectPath = path;
-    this.configPath = join(path, '.claude', 'config.json');
+    this.configPath = join(path, '.writer', 'config.json');
     
     await this.initProject(config);
   }
@@ -184,7 +184,7 @@ export class ProjectManager {
   }
 
   private async ensureDirectoryStructure(type: string): Promise<void> {
-    const directories = ['.claude', 'chapters', 'research', 'drafts', 'exports'];
+    const directories = ['.writer', 'chapters', 'research', 'drafts', 'exports'];
     
     if (type === 'screenplay') {
       directories.push('scenes', 'treatments');
@@ -285,7 +285,7 @@ export class ProjectManager {
   async listChapters(path?: string): Promise<Chapter[]> {
     if (path) {
       this.projectPath = path;
-      this.configPath = join(path, '.claude', 'config.json');
+      this.configPath = join(path, '.writer', 'config.json');
     }
     
     // This would scan the chapters directory
@@ -295,7 +295,7 @@ export class ProjectManager {
 
   async addChapter(path: string, chapter: { title: string; number?: number }): Promise<void> {
     this.projectPath = path;
-    this.configPath = join(path, '.claude', 'config.json');
+    this.configPath = join(path, '.writer', 'config.json');
     
     const config = await this.loadConfig();
     if (!config) throw new Error('No project found');
@@ -308,7 +308,7 @@ export class ProjectManager {
 
   async removeChapter(path: string, number: number): Promise<void> {
     this.projectPath = path;
-    this.configPath = join(path, '.claude', 'config.json');
+    this.configPath = join(path, '.writer', 'config.json');
     
     // Implementation would remove chapter file and update config
     // For now, just stub
@@ -317,7 +317,7 @@ export class ProjectManager {
   async listCharacters(path?: string): Promise<Character[]> {
     if (path) {
       this.projectPath = path;
-      this.configPath = join(path, '.claude', 'config.json');
+      this.configPath = join(path, '.writer', 'config.json');
     }
     
     const config = await this.loadConfig();
@@ -334,14 +334,14 @@ export class ProjectManager {
 
   async addCharacterToProject(path: string, character: Character): Promise<void> {
     this.projectPath = path;
-    this.configPath = join(path, '.claude', 'config.json');
+    this.configPath = join(path, '.writer', 'config.json');
     
     await this.addCharacter(character.name, character.role, character.description);
   }
 
   async updateCharacter(path: string, name: string, updates: Partial<Character>): Promise<void> {
     this.projectPath = path;
-    this.configPath = join(path, '.claude', 'config.json');
+    this.configPath = join(path, '.writer', 'config.json');
     
     const config = await this.loadConfig();
     if (!config) throw new Error('No project found');
@@ -355,7 +355,7 @@ export class ProjectManager {
 
   async removeCharacter(path: string, name: string): Promise<void> {
     this.projectPath = path;
-    this.configPath = join(path, '.claude', 'config.json');
+    this.configPath = join(path, '.writer', 'config.json');
     
     const config = await this.loadConfig();
     if (!config) throw new Error('No project found');

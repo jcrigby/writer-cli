@@ -39,7 +39,7 @@ export const chapterCommand: CommandModule<{}, ChapterArgs> = {
       const projectManager = new ProjectManager();
       
       if (!await projectManager.isProjectDirectory(process.cwd())) {
-        console.error('❌ Not in a writing project directory. Run "claude init" first.');
+        console.error('❌ Not in a writing project directory. Run "writer init" first.');
         process.exit(1);
       }
 
@@ -64,7 +64,7 @@ export const chapterCommand: CommandModule<{}, ChapterArgs> = {
         case 'list':
           const chapters = await projectManager.listChapters(process.cwd());
           if (chapters.length === 0) {
-            console.log('📚 No chapters found. Add one with: claude chapter add "Chapter Title"');
+            console.log('📚 No chapters found. Add one with: writer chapter add "Chapter Title"');
           } else {
             console.log('📚 Chapters:');
             chapters.forEach(chapter => {

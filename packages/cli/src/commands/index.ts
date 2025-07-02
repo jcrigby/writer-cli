@@ -21,7 +21,7 @@ export interface WriterCliArgs {
 
 export async function parseWriterCommands(): Promise<WriterCliArgs> {
   const argv = await yargs(hideBin(process.argv))
-    .scriptName('claude')
+    .scriptName('writer')
     .usage('$0 <command> [options]')
     .command(initCommand)
     .command(chapterCommand)

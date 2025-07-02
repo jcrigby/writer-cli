@@ -44,7 +44,7 @@ export const characterCommand: CommandModule<{}, CharacterArgs> = {
       const projectManager = new ProjectManager();
       
       if (!await projectManager.isProjectDirectory(process.cwd())) {
-        console.error('❌ Not in a writing project directory. Run "claude init" first.');
+        console.error('❌ Not in a writing project directory. Run "writer init" first.');
         process.exit(1);
       }
 
@@ -72,7 +72,7 @@ export const characterCommand: CommandModule<{}, CharacterArgs> = {
         case 'list':
           const characters = await projectManager.listCharacters(process.cwd());
           if (characters.length === 0) {
-            console.log('👥 No characters found. Create one with: claude character create "Name" --role protagonist');
+            console.log('👥 No characters found. Create one with: writer character create "Name" --role protagonist');
           } else {
             console.log('👥 Characters:');
             characters.forEach(character => {

@@ -55,9 +55,9 @@ export const initCommand: CommandModule<{}, InitArgs> = {
       console.log(`🎯 Target word count: ${projectConfig.targetWordCount.toLocaleString()}`);
       console.log('');
       console.log('Next steps:');
-      console.log('  claude chapter add "Chapter 1: The Beginning"');
-      console.log('  claude character create "Protagonist" --role main');
-      console.log('  claude write --continue chapter1.md');
+      console.log('  writer chapter add "Chapter 1: The Beginning"');
+      console.log('  writer character create "Protagonist" --role main');
+      console.log('  writer write --continue chapter1.md');
       
     } catch (error) {
       console.error('❌ Failed to initialize project:', error instanceof Error ? error.message : error);

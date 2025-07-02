@@ -44,7 +44,7 @@ export const brainstormCommand: CommandModule<{}, BrainstormArgs> = {
       const projectManager = new ProjectManager();
       
       if (!await projectManager.isProjectDirectory(process.cwd())) {
-        console.error('❌ Not in a writing project directory. Run "claude init" first.');
+        console.error('❌ Not in a writing project directory. Run "writer init" first.');
         process.exit(1);
       }
 
