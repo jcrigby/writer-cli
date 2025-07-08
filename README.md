@@ -106,6 +106,7 @@ writer brainstorm --theme "plot twist" --context "mystery novel"
 
 ### Version Control & GitHub
 
+- `writer publish [name]` - Create a new GitHub repository
 - `writer sync` - Setup and sync with GitHub
 - `writer sync --setup --remote <url>` - Configure GitHub repository
 - `writer sync --push` - Push changes to GitHub
@@ -121,15 +122,23 @@ writer brainstorm --theme "plot twist" --context "mystery novel"
 
 Writer CLI includes seamless GitHub integration for backing up your manuscripts:
 
-### Setup GitHub Repository
+### Quick Setup (Auto-create Repository)
 
 1. Create a GitHub personal access token at https://github.com/settings/tokens
-2. Set the token: `export GITHUB_TOKEN=your-token` 
-3. Create a new repository on GitHub
-4. Connect your project:
+2. Set the token: `export GITHUB_TOKEN=your-token`
+3. From your project directory:
    ```bash
-   writer sync --setup --remote https://github.com/username/my-novel.git
+   writer publish
    ```
+
+This automatically creates a private GitHub repository and pushes your manuscript!
+
+### Manual Setup (Existing Repository)
+
+If you already have a repository:
+```bash
+writer sync --setup --remote https://github.com/username/my-novel.git
+```
 
 ### Daily Workflow
 

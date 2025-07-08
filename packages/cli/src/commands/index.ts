@@ -18,6 +18,7 @@ import { historyCommand } from './historyCommand.js';
 import { backupCommand } from './backupCommand.js';
 import { statusCommand } from './statusCommand.js';
 import { syncCommand } from './syncCommand.js';
+import { publishCommand } from './publishCommand.js';
 
 export interface WriterCliArgs {
   command?: string;
@@ -40,6 +41,7 @@ export async function parseWriterCommands(): Promise<WriterCliArgs> {
     .command(backupCommand)
     .command(statusCommand)
     .command(syncCommand)
+    .command(publishCommand)
     .demandCommand(1, 'You must specify a command')
     .help()
     .alias('h', 'help')
@@ -64,6 +66,7 @@ export function isWriterCommand(args: string[]): boolean {
     'backup',
     'status',
     'sync',
+    'publish',
     'outline',
     'research',
     'export'

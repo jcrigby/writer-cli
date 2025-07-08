@@ -35,6 +35,7 @@ async function main() {
     console.log('  backup [tag]           Create backups and restore versions');
     console.log('  status                 Show project status and progress');
     console.log('  sync                   Sync with GitHub (push/pull)');
+    console.log('  publish [name]         Create GitHub repo and publish');
     console.log('');
     console.log('Examples:');
     console.log('  writer init "My Novel" --type novel');
