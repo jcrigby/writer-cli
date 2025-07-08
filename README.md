@@ -71,7 +71,20 @@ writer init "User Guide" --type technical
 writer init "My Screenplay" --type screenplay
 ```
 
-### 3. Start Writing
+### 3. Import Existing Work (Optional)
+
+```bash
+# Import from a directory of manuscripts
+writer import ~/Documents/MyNovel
+
+# Import a specific Word document
+writer import manuscript.docx
+
+# Preview what would be imported
+writer import --dry-run
+```
+
+### 4. Start Writing
 
 ```bash
 # Start writing with AI assistance
@@ -92,6 +105,7 @@ writer brainstorm --theme "plot twist" --context "mystery novel"
 ### Core Commands
 
 - `writer init [title]` - Initialize a new writing project
+- `writer import [source]` - Import existing manuscripts
 - `writer write [file]` - AI-assisted writing mode
 - `writer revise <file>` - AI-powered revision suggestions
 - `writer suggest [file]` - Get improvement suggestions
@@ -158,6 +172,47 @@ writer sync
 ```
 
 The integration automatically handles authentication and creates meaningful commit messages with word counts.
+
+## Importing Existing Work
+
+Writer CLI can import manuscripts from various formats and sources:
+
+### Supported Formats
+
+- **📄 Word Documents** (.docx) - Full conversion to Markdown
+- **📝 Text Files** (.txt, .md) - Direct import with formatting
+- **🎬 Screenplays** (.fountain) - Fountain format support
+- **📁 Scrivener Projects** (.scriv) - Extract individual documents
+- **📚 Folder Collections** - Batch import multiple files
+
+### Import Examples
+
+```bash
+# Scan current directory for importable files
+writer import
+
+# Import specific directory
+writer import ~/Documents/MyNovel --organize
+
+# Import single Word document
+writer import "My Novel Draft.docx" --chapters
+
+# Preview import without making changes
+writer import ~/old-writing --dry-run
+
+# Import preserving original structure
+writer import ~/writing-backup --preserve
+```
+
+### Import Options
+
+- `--organize` - Auto-organize files by type and content
+- `--chapters` - Import files as numbered chapters
+- `--preserve` - Keep original file structure
+- `--dry-run` - Preview import without making changes
+- `--force` - Overwrite existing files without asking
+
+Word documents are automatically converted to Markdown with formatting preserved.
 
 ## Configuration
 

@@ -37,6 +37,7 @@ async function main() {
     console.log('  sync                   Sync with GitHub (push/pull)');
     console.log('  publish [name]         Create GitHub repo and publish');
     console.log('  auth                   Setup GitHub authentication');
+    console.log('  import [source]        Import existing manuscripts');
     console.log('');
     console.log('Examples:');
     console.log('  writer init "My Novel" --type novel');
