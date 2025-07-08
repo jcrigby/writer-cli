@@ -5,6 +5,7 @@
  */
 
 import { readFile, writeFile, mkdir, access } from 'fs/promises';
+import { existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { WritingProject, ProjectSettings } from '../core/writingCommands.js';
 

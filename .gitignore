@@ -2,7 +2,11 @@
 .env
 .env~
 
-# gemini-cli settings
+# writer-cli settings
+.writer/
+!.writer/config.json
+
+# Legacy gemini-cli settings
 .gemini/
 !gemini/config.yaml
 

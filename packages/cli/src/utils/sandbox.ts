@@ -190,7 +190,8 @@ export async function start_sandbox(
       console.error('ERROR: cannot BUILD_SANDBOX when using MacOS Seatbelt');
       process.exit(1);
     }
-    const profile = (process.env.SEATBELT_PROFILE ??= 'permissive-open');
+    const profile = process.env.SEATBELT_PROFILE || 'permissive-open';
+    process.env.SEATBELT_PROFILE = profile;
     let profileFile = new URL(`sandbox-macos-${profile}.sb`, import.meta.url)
       .pathname;
     // if profile name is not recognized, then look for file under project settings directory

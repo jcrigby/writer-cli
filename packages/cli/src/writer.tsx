@@ -38,6 +38,7 @@ import {
 import { validateAuthMethod } from './config/auth.js';
 import { setMaxSizedBoxDebugging } from './ui/components/shared/MaxSizedBox.js';
 import { isWriterCommand, parseWriterCommands } from './commands/index.js';
+import { ProjectManager } from 'writer-cli-core';
 
 function getNodeMemoryArgs(config: Config): string[] {
   const totalMemoryMB = os.totalmem() / (1024 * 1024);
@@ -98,6 +99,17 @@ export async function main() {
   }
   
   const settings = loadSettings(workspaceRoot);
+
+  // Check if we're in a writing project directory
+  let writingProject = null;
+  try {
+    const projectManager = new ProjectManager(workspaceRoot);
+    if (await projectManager.isProjectDirectory(workspaceRoot)) {
+      writingProject = await projectManager.loadProject();
+    }
+  } catch (error) {
+    // Ignore project loading errors in TUI mode
+  }
 
   await cleanupCheckpoints();
   if (settings.errors.length > 0) {
@@ -209,6 +221,7 @@ export async function main() {
           config={config}
           settings={settings}
           startupWarnings={startupWarnings}
+          writingProject={writingProject}
         />
       </React.StrictMode>,
       { exitOnCtrlC: false },
@@ -239,7 +252,7 @@ export async function main() {
     settings,
   );
 
-  await runNonInteractive(nonInteractiveConfig, input);
+  await runNonInteractive(nonInteractiveConfig, input, writingProject);
   process.exit(0);
 }
 

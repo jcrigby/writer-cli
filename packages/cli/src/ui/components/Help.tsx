@@ -8,12 +8,14 @@ import React from 'react';
 import { Box, Text } from 'ink';
 import { Colors } from '../colors.js';
 import { SlashCommand } from '../hooks/slashCommandProcessor.js';
+import { WritingProject } from 'writer-cli-core';
 
 interface Help {
   commands: SlashCommand[];
+  writingProject?: WritingProject | null;
 }
 
-export const Help: React.FC<Help> = ({ commands }) => (
+export const Help: React.FC<Help> = ({ commands, writingProject }) => (
   <Box
     flexDirection="column"
     marginBottom={1}
@@ -21,9 +23,41 @@ export const Help: React.FC<Help> = ({ commands }) => (
     borderStyle="round"
     padding={1}
   >
+    {/* Writing Project Context */}
+    {writingProject && (
+      <Box flexDirection="column" marginBottom={1}>
+        <Text bold color={Colors.AccentPurple}>
+          📚 Writing Project: {writingProject.title}
+        </Text>
+        <Text color={Colors.Foreground}>
+          📝 {writingProject.author} • {writingProject.type} • {writingProject.characters?.length || 0} characters
+        </Text>
+        <Text color={Colors.Foreground}>
+          🎯 Target: {writingProject.settings?.wordCountGoal?.toLocaleString() || 'No target set'} words
+        </Text>
+        <Box marginTop={1}>
+          <Text bold color={Colors.AccentPurple}>
+            ✦ I can help with your {writingProject.type}! Try asking me to:
+          </Text>
+        </Box>
+        <Text color={Colors.Foreground}>
+          • Continue writing or brainstorm plot ideas
+        </Text>
+        <Text color={Colors.Foreground}>
+          • Develop characters or improve dialogue
+        </Text>
+        <Text color={Colors.Foreground}>
+          • Review and revise your writing
+        </Text>
+        <Text color={Colors.Foreground}>
+          • Suggest improvements for pacing or style
+        </Text>
+      </Box>
+    )}
+
     {/* Basics */}
     <Text bold color={Colors.Foreground}>
-      Basics:
+      {writingProject ? 'Commands:' : 'Basics:'}
     </Text>
     <Text color={Colors.Foreground}>
       <Text bold color={Colors.AccentPurple}>

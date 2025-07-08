@@ -1,94 +1,112 @@
 # Writer CLI
 
-A powerful command-line interface for writers that brings AI assistance directly to your terminal. Built on the Gemini CLI foundation, Writer CLI supports multiple AI models through OpenRouter, including Claude, GPT-4, and more.
+A powerful command-line tool that brings AI-powered writing assistance directly to your terminal. Built on Claude's advanced language capabilities, Writer CLI streamlines creative writing workflows with intelligent project management, version control, and multi-format export capabilities.
 
 ## Features
 
-- **Multi-Model Support**: Use Claude 3.5, GPT-4, Gemini, and other models through OpenRouter
+- **Multi-Model AI Support**: Access Claude (via Anthropic), GPT-4 (via OpenAI), and other models through OpenRouter
 - **Project Management**: Organize novels, screenplays, academic papers, technical docs, blogs, and poetry
-- **Writing Commands**: Write, revise, suggest improvements, brainstorm ideas
+- **Smart Writing Assistance**: AI-powered writing, revision, and brainstorming
 - **Character & World Building**: Track characters, locations, and story elements
-- **Version Control**: Git integration for manuscript versioning
-- **Export Formats**: Generate PDFs, EPUB, DOCX, HTML from your manuscripts
-- **Context-Aware**: Maintains awareness of your characters, plot, and writing style
+- **Version Control**: Git-based manuscript tracking (coming soon)
+- **Export Formats**: PDF, EPUB, DOCX, and more (coming soon)
+- **Word Count Tracking**: Monitor progress with detailed statistics (coming soon)
 
 ## Installation
 
+### From Source (Currently Required)
+
 ```bash
-npm install -g writer-cli
+# Clone the repository
+git clone https://github.com/jcrigby/writer-cli.git
+cd writer-cli
+
+# Install dependencies
+npm install
+
+# Build the project
+npm run build
+
+# Link for global use
+npm link
 ```
+
+### Prerequisites
+
+- Node.js 18.0.0 or higher
+- npm or yarn
+- An API key from at least one provider:
+  - Anthropic (for Claude)
+  - OpenAI (for GPT models)
+  - OpenRouter (for multiple models)
 
 ## Quick Start
 
-### 1. Set up API Key
+### 1. Set up API Keys
 
-Get an API key from [OpenRouter](https://openrouter.ai/) and set it:
+Create a `.env` file in your home directory or project root:
 
 ```bash
-export OPENROUTER_API_KEY="your-api-key"
-```
+# Required: At least one API key
+ANTHROPIC_API_KEY=your-anthropic-key
+OPENAI_API_KEY=your-openai-key
+OPENROUTER_API_KEY=your-openrouter-key
 
-Or use direct provider keys:
-```bash
-export ANTHROPIC_API_KEY="your-anthropic-key"
-export OPENAI_API_KEY="your-openai-key"
+# Optional: Default model selection
+WRITER_MODEL=claude-3-opus-20240229
 ```
 
 ### 2. Initialize a Writing Project
 
 ```bash
 # Create a new novel project
-writer init --type novel "My Great Novel"
+writer init "My Great Novel" --type novel --author "Your Name"
 
-# Create a screenplay project
-writer init --type screenplay "My Movie Script"
-
-# Create an academic paper
-writer init --type academic "Research Paper"
+# Create other project types
+writer init "Research Paper" --type academic
+writer init "User Guide" --type technical
+writer init "My Screenplay" --type screenplay
 ```
 
 ### 3. Start Writing
 
 ```bash
-# Write a new chapter
-writer write "Write an opening chapter about a mysterious stranger arriving in town"
-
-# Continue writing from where you left off
-writer write --continue chapter1.md
+# Start writing with AI assistance
+writer write chapter1.md
 
 # Revise existing content
-writer revise --tone dramatic chapter1.md "Make the opening more suspenseful"
+writer revise chapter1.md --tone "more dramatic"
 
-# Get suggestions
-writer suggest --improve-dialogue chapter1.md
+# Get suggestions for improvement
+writer suggest chapter1.md --focus "dialogue"
+
+# Brainstorm ideas
+writer brainstorm --theme "plot twist" --context "mystery novel"
 ```
 
-## Core Commands
+## Command Reference
+
+### Core Commands
+
+- `writer init [title]` - Initialize a new writing project
+- `writer write [file]` - AI-assisted writing mode
+- `writer revise <file>` - AI-powered revision suggestions
+- `writer suggest [file]` - Get improvement suggestions
+- `writer brainstorm` - Generate creative ideas
 
 ### Project Management
-```bash
-writer init --type <type> "<title>"          # Initialize new project
-writer chapter add "Chapter Title"           # Add new chapter
-writer character create "John Doe" --role protagonist
-writer location add "Castle Blackstone" --description "Ancient fortress"
-writer status                                # View project statistics
-```
 
-### Writing Assistance
-```bash
-writer write <instruction> [file]            # Write new content
-writer revise <file> <instruction>           # Revise existing content
-writer suggest --<type> <file>               # Get suggestions
-writer brainstorm "<topic>"                  # Brainstorm ideas
-writer analyze --<type> <file>               # Analyze writing
-```
+- `writer chapter add <title>` - Add a new chapter
+- `writer chapter list` - List all chapters
+- `writer character create <name>` - Create a new character
+- `writer character list` - List all characters
 
-### File Management
-```bash
-writer export --format pdf                   # Export to PDF
-writer backup --create-tag "draft-v1"        # Create backup
-writer list chapters                         # List all chapters
-```
+### Coming Soon
+
+- `writer outline` - Manage story structure
+- `writer research` - Organize research notes
+- `writer export` - Export to various formats
+- `writer status` - View project statistics
 
 ## Configuration
 

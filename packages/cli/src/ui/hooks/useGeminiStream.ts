@@ -24,6 +24,7 @@ import {
   ThoughtSummary,
   UnauthorizedError,
   UserPromptEvent,
+  WritingProject,
 } from 'writer-cli-core';
 import { type Part, type PartListUnion } from '@google/genai';
 import {
@@ -90,6 +91,7 @@ export const useGeminiStream = (
   getPreferredEditor: () => EditorType | undefined,
   onAuthError: () => void,
   performMemoryRefresh: () => Promise<void>,
+  writingProject?: WritingProject | null,
 ) => {
   const [initError, setInitError] = useState<string | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -270,7 +272,21 @@ export const useGeminiStream = (
             { type: MessageType.USER, text: trimmedQuery },
             userMessageTimestamp,
           );
-          localQueryToSendToGemini = trimmedQuery;
+          
+          // Add project context to query if available
+          let queryWithContext = trimmedQuery;
+          if (writingProject) {
+            queryWithContext = `[Writing Project Context]
+Title: ${writingProject.title}
+Author: ${writingProject.author}
+Type: ${writingProject.type}
+Target Word Count: ${writingProject.settings?.wordCountGoal?.toLocaleString() || 'Not set'}
+Characters: ${writingProject.characters?.length || 0}
+
+User Request: ${trimmedQuery}`;
+          }
+          
+          localQueryToSendToGemini = queryWithContext;
         }
       } else {
         // It's a function response (PartListUnion that isn't a string)
@@ -294,6 +310,7 @@ export const useGeminiStream = (
       logger,
       shellModeActive,
       scheduleToolCalls,
+      writingProject,
     ],
   );
 

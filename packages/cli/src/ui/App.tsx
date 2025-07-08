@@ -54,6 +54,7 @@ import {
   ApprovalMode,
   isEditorAvailable,
   EditorType,
+  WritingProject,
 } from 'writer-cli-core';
 import { validateAuthMethod } from '../config/auth.js';
 import { useLogger } from './hooks/useLogger.js';
@@ -79,6 +80,7 @@ interface AppProps {
   config: Config;
   settings: LoadedSettings;
   startupWarnings?: string[];
+  writingProject?: WritingProject | null;
 }
 
 export const AppWrapper = (props: AppProps) => (
@@ -87,7 +89,7 @@ export const AppWrapper = (props: AppProps) => (
   </SessionStatsProvider>
 );
 
-const App = ({ config, settings, startupWarnings = [] }: AppProps) => {
+const App = ({ config, settings, startupWarnings = [], writingProject }: AppProps) => {
   useBracketedPaste();
   const [updateMessage, setUpdateMessage] = useState<string | null>(null);
   const { stdout } = useStdout();
@@ -419,6 +421,7 @@ const App = ({ config, settings, startupWarnings = [] }: AppProps) => {
     getPreferredEditor,
     onAuthError,
     performMemoryRefresh,
+    writingProject,
   );
   pendingHistoryItems.push(...pendingGeminiHistoryItems);
   const { elapsedTime, currentLoadingPhrase } =
@@ -582,8 +585,8 @@ const App = ({ config, settings, startupWarnings = [] }: AppProps) => {
           key={staticKey}
           items={[
             <Box flexDirection="column" key="header">
-              <Header terminalWidth={terminalWidth} />
-              {!settings.merged.hideTips && <Tips config={config} />}
+              <Header terminalWidth={terminalWidth} writingProject={writingProject} />
+              {!settings.merged.hideTips && <Tips config={config} writingProject={writingProject} />}
               {updateMessage && <UpdateNotification message={updateMessage} />}
             </Box>,
             ...history.map((h) => (
@@ -621,7 +624,7 @@ const App = ({ config, settings, startupWarnings = [] }: AppProps) => {
           </Box>
         </OverflowProvider>
 
-        {showHelp && <Help commands={slashCommands} />}
+        {showHelp && <Help commands={slashCommands} writingProject={writingProject} />}
 
         <Box flexDirection="column" ref={mainControlsRef}>
           {startupWarnings.length > 0 && (

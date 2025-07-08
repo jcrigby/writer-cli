@@ -11,6 +11,7 @@ import {
   ToolRegistry,
   shutdownTelemetry,
   isTelemetrySdkInitialized,
+  WritingProject,
 } from 'writer-cli-core';
 import {
   Content,
@@ -46,6 +47,7 @@ function getResponseText(response: GenerateContentResponse): string | null {
 export async function runNonInteractive(
   config: Config,
   input: string,
+  writingProject?: WritingProject | null,
 ): Promise<void> {
   // Handle EPIPE errors when the output is piped to a command that closes early.
   process.stdout.on('error', (err: NodeJS.ErrnoException) => {
@@ -60,7 +62,23 @@ export async function runNonInteractive(
 
   const chat = await geminiClient.getChat();
   const abortController = new AbortController();
-  let currentMessages: Content[] = [{ role: 'user', parts: [{ text: input }] }];
+  
+  // Build user message with project context if available
+  let userMessage = input;
+  if (writingProject) {
+    const projectContext = `
+[Writing Project Context]
+Title: ${writingProject.title}
+Author: ${writingProject.author}
+Type: ${writingProject.type}
+Target Word Count: ${writingProject.settings?.wordCountGoal?.toLocaleString() || 'Not set'}
+Characters: ${writingProject.characters?.length || 0}
+
+User Request: ${input}`;
+    userMessage = projectContext;
+  }
+  
+  let currentMessages: Content[] = [{ role: 'user', parts: [{ text: userMessage }] }];
 
   try {
     while (true) {
