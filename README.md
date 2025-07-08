@@ -124,9 +124,13 @@ Writer CLI includes seamless GitHub integration for backing up your manuscripts:
 
 ### Quick Setup (Auto-create Repository)
 
-1. Create a GitHub personal access token at https://github.com/settings/tokens
-2. Set the token: `export GITHUB_TOKEN=your-token`
-3. From your project directory:
+1. From your project directory:
+   ```bash
+   writer auth
+   ```
+   This guides you through creating a GitHub token and setting it up securely.
+
+2. Create a new repository and publish:
    ```bash
    writer publish
    ```

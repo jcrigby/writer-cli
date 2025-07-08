@@ -10,6 +10,8 @@ import { ProjectManager } from 'writer-cli-core';
 import { simpleGit } from 'simple-git';
 import { fetch } from 'undici';
 import * as path from 'path';
+import * as fs from 'fs/promises';
+import * as os from 'os';
 
 interface PublishArgs {
   name?: string;
@@ -63,13 +65,12 @@ export const publishCommand: CommandModule<{}, PublishArgs> = {
       }
 
       // Get GitHub token
-      const token = argv.token || process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+      const token = argv.token || await getGitHubToken();
       if (!token) {
         console.error('❌ GitHub token required');
-        console.error('   Set token with: export GITHUB_TOKEN=your-token');
+        console.error('   Run: writer auth');
         console.error('   Or use: writer publish --token your-token');
-        console.error('   Create a token at: https://github.com/settings/tokens');
-        console.error('   Required scopes: repo (for private) or public_repo (for public)');
+        console.error('   Or set: export GITHUB_TOKEN=your-token');
         process.exit(1);
       }
 
@@ -249,3 +250,28 @@ exports/*.tmp
     }
   }
 };
+
+async function getGitHubToken(): Promise<string | null> {
+  // Check environment variables first
+  const envToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+  if (envToken) return envToken;
+
+  // Check stored token file
+  try {
+    const tokenFile = path.join(os.homedir(), '.writer', 'github-token');
+    const token = await fs.readFile(tokenFile, 'utf-8');
+    return token.trim();
+  } catch {
+    // Check .env file in project
+    try {
+      const envFile = path.join(process.cwd(), '.env');
+      const envContent = await fs.readFile(envFile, 'utf-8');
+      const match = envContent.match(/GITHUB_TOKEN=(.+)/);
+      if (match) return match[1].trim();
+    } catch {
+      // No .env file
+    }
+  }
+
+  return null;
+}

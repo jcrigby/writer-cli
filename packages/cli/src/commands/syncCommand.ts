@@ -10,6 +10,7 @@ import { ProjectManager } from 'writer-cli-core';
 import { simpleGit } from 'simple-git';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import * as os from 'os';
 
 interface SyncArgs {
   push?: boolean;
@@ -74,7 +75,7 @@ export const syncCommand: CommandModule<{}, SyncArgs> = {
       await gitService.initialize();
 
       // Get GitHub token from args or environment
-      const token = argv.token || process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+      const token = argv.token || await getGitHubToken();
 
       if (argv.setup) {
         // Setup GitHub remote
@@ -231,3 +232,28 @@ export const syncCommand: CommandModule<{}, SyncArgs> = {
     }
   }
 };
+
+async function getGitHubToken(): Promise<string | null> {
+  // Check environment variables first
+  const envToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+  if (envToken) return envToken;
+
+  // Check stored token file
+  try {
+    const tokenFile = path.join(os.homedir(), '.writer', 'github-token');
+    const token = await fs.readFile(tokenFile, 'utf-8');
+    return token.trim();
+  } catch {
+    // Check .env file in project
+    try {
+      const envFile = path.join(process.cwd(), '.env');
+      const envContent = await fs.readFile(envFile, 'utf-8');
+      const match = envContent.match(/GITHUB_TOKEN=(.+)/);
+      if (match) return match[1].trim();
+    } catch {
+      // No .env file
+    }
+  }
+
+  return null;
+}

@@ -7,6 +7,8 @@
 import { simpleGit, SimpleGit, StatusResult } from 'simple-git';
 import { join } from 'path';
 import { readFile, writeFile } from 'fs/promises';
+import * as os from 'os';
+import * as path from 'path';
 
 export interface GitCommitInfo {
   hash: string;
@@ -33,7 +35,11 @@ export class ManuscriptGitService {
     this.git = simpleGit(projectPath);
     
     // Set up authentication if GitHub token is available
-    const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+    this.setupAuthentication();
+  }
+
+  private async setupAuthentication(): Promise<void> {
+    const token = await this.getGitHubToken();
     if (token) {
       this.git.env({
         ...process.env,
@@ -42,6 +48,31 @@ export class ManuscriptGitService {
         GIT_PASSWORD: token
       });
     }
+  }
+
+  private async getGitHubToken(): Promise<string | null> {
+    // Check environment variables first
+    const envToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+    if (envToken) return envToken;
+
+    // Check stored token file
+    try {
+      const tokenFile = path.join(os.homedir(), '.writer', 'github-token');
+      const token = await readFile(tokenFile, 'utf-8');
+      return token.trim();
+    } catch {
+      // Check .env file in project
+      try {
+        const envFile = path.join(this.projectPath, '.env');
+        const envContent = await readFile(envFile, 'utf-8');
+        const match = envContent.match(/GITHUB_TOKEN=(.+)/);
+        if (match) return match[1].trim();
+      } catch {
+        // No .env file
+      }
+    }
+
+    return null;
   }
 
   async initialize(): Promise<void> {

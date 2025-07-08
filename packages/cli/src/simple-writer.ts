@@ -36,6 +36,7 @@ async function main() {
     console.log('  status                 Show project status and progress');
     console.log('  sync                   Sync with GitHub (push/pull)');
     console.log('  publish [name]         Create GitHub repo and publish');
+    console.log('  auth                   Setup GitHub authentication');
     console.log('');
     console.log('Examples:');
     console.log('  writer init "My Novel" --type novel');
