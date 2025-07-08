@@ -54,6 +54,9 @@ OPENROUTER_API_KEY=your-openrouter-key
 
 # Optional: Default model selection
 WRITER_MODEL=claude-3-opus-20240229
+
+# Optional: GitHub integration
+GITHUB_TOKEN=your-github-personal-access-token
 ```
 
 ### 2. Initialize a Writing Project
@@ -101,12 +104,47 @@ writer brainstorm --theme "plot twist" --context "mystery novel"
 - `writer character create <name>` - Create a new character
 - `writer character list` - List all characters
 
+### Version Control & GitHub
+
+- `writer sync` - Setup and sync with GitHub
+- `writer sync --setup --remote <url>` - Configure GitHub repository
+- `writer sync --push` - Push changes to GitHub
+- `writer sync --pull` - Pull changes from GitHub
+
 ### Coming Soon
 
 - `writer outline` - Manage story structure
 - `writer research` - Organize research notes
 - `writer export` - Export to various formats
-- `writer status` - View project statistics
+
+## GitHub Integration
+
+Writer CLI includes seamless GitHub integration for backing up your manuscripts:
+
+### Setup GitHub Repository
+
+1. Create a GitHub personal access token at https://github.com/settings/tokens
+2. Set the token: `export GITHUB_TOKEN=your-token` 
+3. Create a new repository on GitHub
+4. Connect your project:
+   ```bash
+   writer sync --setup --remote https://github.com/username/my-novel.git
+   ```
+
+### Daily Workflow
+
+```bash
+# Push your latest changes
+writer sync --push
+
+# Pull changes from another computer  
+writer sync --pull
+
+# Full sync (pull then push)
+writer sync
+```
+
+The integration automatically handles authentication and creates meaningful commit messages with word counts.
 
 ## Configuration
 

@@ -30,11 +30,17 @@ async function main() {
     console.log('  revise <file>          AI-powered revision');
     console.log('  suggest [file]         Get writing suggestions');
     console.log('  brainstorm             Generate creative ideas');
+    console.log('  commit <message>       Commit changes with version control');
+    console.log('  history                View manuscript history');
+    console.log('  backup [tag]           Create backups and restore versions');
+    console.log('  status                 Show project status and progress');
+    console.log('  sync                   Sync with GitHub (push/pull)');
     console.log('');
     console.log('Examples:');
     console.log('  writer init "My Novel" --type novel');
     console.log('  writer character create "Hero" --role protagonist');
-    console.log('  writer brainstorm --theme adventure');
+    console.log('  writer commit "Complete Chapter 1 draft"');
+    console.log('  writer backup draft-v1');
     console.log('');
     console.log('For help with a specific command: writer <command> --help');
   }

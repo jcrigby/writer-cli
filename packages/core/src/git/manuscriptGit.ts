@@ -31,6 +31,17 @@ export class ManuscriptGitService {
   constructor(projectPath: string) {
     this.projectPath = projectPath;
     this.git = simpleGit(projectPath);
+    
+    // Set up authentication if GitHub token is available
+    const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+    if (token) {
+      this.git.env({
+        ...process.env,
+        GIT_ASKPASS: 'echo',
+        GIT_USERNAME: token,
+        GIT_PASSWORD: token
+      });
+    }
   }
 
   async initialize(): Promise<void> {
@@ -267,5 +278,50 @@ node_modules/
     }
     
     return output;
+  }
+
+  // Remote repository methods
+  async hasRemote(): Promise<boolean> {
+    const remotes = await this.git.getRemotes();
+    return remotes.length > 0;
+  }
+
+  async addRemote(name: string, url: string): Promise<void> {
+    await this.git.addRemote(name, url);
+  }
+
+  async pushToRemote(remote: string = 'origin', branch: string = 'main'): Promise<void> {
+    await this.git.push(remote, branch);
+  }
+
+  async pullFromRemote(remote: string = 'origin', branch: string = 'main'): Promise<void> {
+    await this.git.pull(remote, branch);
+  }
+
+  async getRemoteUrl(): Promise<string | null> {
+    const remotes = await this.git.getRemotes(true);
+    if (remotes.length > 0) {
+      return remotes[0].refs.push || remotes[0].refs.fetch || null;
+    }
+    return null;
+  }
+
+  async configureGitHub(repoUrl: string, token?: string): Promise<void> {
+    let authenticatedUrl = repoUrl;
+    
+    // If token provided, embed it in the URL
+    if (token && repoUrl.startsWith('https://github.com/')) {
+      authenticatedUrl = repoUrl.replace('https://github.com/', `https://${token}@github.com/`);
+    }
+
+    // Check if origin already exists
+    const remotes = await this.git.getRemotes();
+    const hasOrigin = remotes.some(r => r.name === 'origin');
+
+    if (hasOrigin) {
+      await this.git.remote(['set-url', 'origin', authenticatedUrl]);
+    } else {
+      await this.git.addRemote('origin', authenticatedUrl);
+    }
   }
 }

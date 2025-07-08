@@ -13,6 +13,11 @@ import { writeCommand } from './writeCommand.js';
 import { reviseCommand } from './reviseCommand.js';
 import { suggestCommand } from './suggestCommand.js';
 import { brainstormCommand } from './brainstormCommand.js';
+import { commitCommand } from './commitCommand.js';
+import { historyCommand } from './historyCommand.js';
+import { backupCommand } from './backupCommand.js';
+import { statusCommand } from './statusCommand.js';
+import { syncCommand } from './syncCommand.js';
 
 export interface WriterCliArgs {
   command?: string;
@@ -30,6 +35,11 @@ export async function parseWriterCommands(): Promise<WriterCliArgs> {
     .command(reviseCommand)
     .command(suggestCommand)
     .command(brainstormCommand)
+    .command(commitCommand)
+    .command(historyCommand)
+    .command(backupCommand)
+    .command(statusCommand)
+    .command(syncCommand)
     .demandCommand(1, 'You must specify a command')
     .help()
     .alias('h', 'help')
@@ -49,10 +59,14 @@ export function isWriterCommand(args: string[]): boolean {
     'revise',
     'suggest',
     'brainstorm',
+    'commit',
+    'history',
+    'backup',
+    'status',
+    'sync',
     'outline',
     'research',
-    'export',
-    'status'
+    'export'
   ];
   
   return args.length > 0 && writerCommands.includes(args[0]);
