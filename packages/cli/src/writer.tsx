@@ -127,8 +127,7 @@ export async function main() {
   const extensions = loadExtensions(workspaceRoot);
   const config = await loadCliConfig(settings.merged, extensions, sessionId);
 
-  // set default fallback to available api keys
-  // this has to go after load cli because thats where the env is set
+  // set default to OpenRouter (only supported auth type)
   if (!settings.merged.selectedAuthType) {
     if (process.env.OPENROUTER_API_KEY) {
       settings.setValue(
@@ -136,24 +135,9 @@ export async function main() {
         'selectedAuthType',
         AuthType.USE_OPENROUTER as string,
       );
-    } else if (process.env.ANTHROPIC_API_KEY) {
-      settings.setValue(
-        SettingScope.User,
-        'selectedAuthType',
-        AuthType.USE_ANTHROPIC as string,
-      );
-    } else if (process.env.OPENAI_API_KEY) {
-      settings.setValue(
-        SettingScope.User,
-        'selectedAuthType',
-        AuthType.USE_OPENAI as string,
-      );
-    } else if (process.env.GEMINI_API_KEY) {
-      settings.setValue(
-        SettingScope.User,
-        'selectedAuthType',
-        AuthType.USE_GEMINI as string,
-      );
+    } else {
+      console.error('OPENROUTER_API_KEY environment variable is required. Please set it to use Writer CLI.');
+      process.exit(1);
     }
   }
 
@@ -321,21 +305,15 @@ async function validateNonInterActiveAuth(
   selectedAuthType: AuthType | undefined,
   nonInteractiveConfig: Config,
 ) {
-  // making a special case for the cli. many headless environments might not have a settings.json set
-  // so if any API_KEY is set, we'll use that. However since the oauth things are interactive anyway, we'll
-  // still expect that exists
-  if (!selectedAuthType && !process.env.OPENROUTER_API_KEY && !process.env.ANTHROPIC_API_KEY && !process.env.OPENAI_API_KEY && !process.env.GEMINI_API_KEY) {
+  // OpenRouter is the only supported auth method
+  if (!selectedAuthType && !process.env.OPENROUTER_API_KEY) {
     console.error(
-      `Please set an Auth method in your ${USER_SETTINGS_PATH} OR specify OPENROUTER_API_KEY/ANTHROPIC_API_KEY/OPENAI_API_KEY/GEMINI_API_KEY env variable before running`,
+      `Please set an Auth method in your ${USER_SETTINGS_PATH} OR specify OPENROUTER_API_KEY env variable before running`,
     );
     process.exit(1);
   }
 
-  selectedAuthType = selectedAuthType || 
-    (process.env.OPENROUTER_API_KEY ? AuthType.USE_OPENROUTER :
-     process.env.ANTHROPIC_API_KEY ? AuthType.USE_ANTHROPIC :
-     process.env.OPENAI_API_KEY ? AuthType.USE_OPENAI :
-     AuthType.USE_GEMINI);
+  selectedAuthType = selectedAuthType || AuthType.USE_OPENROUTER;
   const err = validateAuthMethod(selectedAuthType);
   if (err != null) {
     console.error(err);

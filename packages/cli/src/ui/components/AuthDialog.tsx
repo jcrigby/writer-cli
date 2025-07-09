@@ -27,9 +27,7 @@ export function AuthDialog({
     initialErrorMessage || null,
   );
   const items = [
-    { label: 'Login with Google', value: AuthType.LOGIN_WITH_GOOGLE },
-    { label: 'Gemini API Key (AI Studio)', value: AuthType.USE_GEMINI },
-    { label: 'Vertex AI', value: AuthType.USE_VERTEX_AI },
+    { label: 'OpenRouter API Key', value: AuthType.USE_OPENROUTER },
   ];
 
   let initialAuthIndex = items.findIndex(
@@ -71,7 +69,7 @@ export function AuthDialog({
       padding={1}
       width="100%"
     >
-      <Text bold>Select Auth Method</Text>
+      <Text bold>OpenRouter Authentication Required</Text>
       <RadioButtonSelect
         items={items}
         initialIndex={initialAuthIndex}

@@ -11,13 +11,9 @@ import {
   CountTokensParameters,
   EmbedContentResponse,
   EmbedContentParameters,
-  GoogleGenAI,
 } from '@google/genai';
-import { createCodeAssistContentGenerator } from '../code_assist/codeAssist.js';
 import { DEFAULT_GEMINI_MODEL } from '../config/models.js';
-import { getEffectiveModel } from './modelCheck.js';
 import { OpenRouterClient } from './openrouterClient.js';
-import { getApiKey } from '../config/writerConfig.js';
 
 /**
  * Interface abstracting the core functionalities for generating content and counting tokens.
@@ -37,12 +33,7 @@ export interface ContentGenerator {
 }
 
 export enum AuthType {
-  LOGIN_WITH_GOOGLE = 'oauth-personal',
-  USE_GEMINI = 'gemini-api-key',
-  USE_VERTEX_AI = 'vertex-ai',
   USE_OPENROUTER = 'openrouter-api-key',
-  USE_ANTHROPIC = 'anthropic-api-key', 
-  USE_OPENAI = 'openai-api-key',
 }
 
 export type ContentGeneratorConfig = {
@@ -57,106 +48,31 @@ export async function createContentGeneratorConfig(
   authType: AuthType | string | undefined,
   config?: { getModel?: () => string },
 ): Promise<ContentGeneratorConfig> {
-  const geminiApiKey = process.env.GEMINI_API_KEY;
-  const googleApiKey = process.env.GOOGLE_API_KEY;
-  const googleCloudProject = process.env.GOOGLE_CLOUD_PROJECT;
-  const googleCloudLocation = process.env.GOOGLE_CLOUD_LOCATION;
-
   // Use runtime model from config if available, otherwise fallback to parameter or default
   const effectiveModel = config?.getModel?.() || model || DEFAULT_GEMINI_MODEL;
 
   const contentGeneratorConfig: ContentGeneratorConfig = {
     model: effectiveModel,
-    authType,
+    authType: AuthType.USE_OPENROUTER,
   };
 
-  // if we are using google auth nothing else to validate for now
-  if (authType === AuthType.LOGIN_WITH_GOOGLE) {
-    return contentGeneratorConfig;
-  }
-
-  if (authType === AuthType.USE_GEMINI && geminiApiKey) {
-    contentGeneratorConfig.apiKey = geminiApiKey;
-    contentGeneratorConfig.model = await getEffectiveModel(
-      contentGeneratorConfig.apiKey,
-      contentGeneratorConfig.model,
-    );
-
-    return contentGeneratorConfig;
-  }
-
-  if (
-    authType === AuthType.USE_VERTEX_AI &&
-    !!googleApiKey &&
-    googleCloudProject &&
-    googleCloudLocation
-  ) {
-    contentGeneratorConfig.apiKey = googleApiKey;
-    contentGeneratorConfig.vertexai = true;
-    contentGeneratorConfig.model = await getEffectiveModel(
-      contentGeneratorConfig.apiKey,
-      contentGeneratorConfig.model,
-    );
-
-    return contentGeneratorConfig;
-  }
-
-  // Handle Writer CLI auth types
-  if (authType === AuthType.USE_OPENROUTER && process.env.OPENROUTER_API_KEY) {
+  // OpenRouter is the only supported auth type
+  if (process.env.OPENROUTER_API_KEY) {
     contentGeneratorConfig.apiKey = process.env.OPENROUTER_API_KEY;
     return contentGeneratorConfig;
   }
 
-  if (authType === AuthType.USE_ANTHROPIC && process.env.ANTHROPIC_API_KEY) {
-    contentGeneratorConfig.apiKey = process.env.ANTHROPIC_API_KEY;
-    return contentGeneratorConfig;
-  }
-
-  if (authType === AuthType.USE_OPENAI && process.env.OPENAI_API_KEY) {
-    contentGeneratorConfig.apiKey = process.env.OPENAI_API_KEY;
-    return contentGeneratorConfig;
-  }
-
-  return contentGeneratorConfig;
+  throw new Error(
+    'OPENROUTER_API_KEY environment variable is required. Please set it to use Writer CLI.'
+  );
 }
 
 export async function createContentGenerator(
   config: ContentGeneratorConfig,
   sessionId?: string,
 ): Promise<ContentGenerator> {
-  const version = process.env.CLI_VERSION || process.version;
-  const httpOptions = {
-    headers: {
-      'User-Agent': `GeminiCLI/${version} (${process.platform}; ${process.arch})`,
-    },
-  };
-  if (config.authType === AuthType.LOGIN_WITH_GOOGLE) {
-    return createCodeAssistContentGenerator(
-      httpOptions,
-      config.authType,
-      sessionId,
-    );
-  }
-
-  if (
-    config.authType === AuthType.USE_GEMINI ||
-    config.authType === AuthType.USE_VERTEX_AI
-  ) {
-    const googleGenAI = new GoogleGenAI({
-      apiKey: config.apiKey === '' ? undefined : config.apiKey,
-      vertexai: config.vertexai,
-      httpOptions,
-    });
-
-    return googleGenAI.models;
-  }
-
-  // Support for Writer CLI auth types
-  if (
-    config.authType === AuthType.USE_OPENROUTER ||
-    config.authType === AuthType.USE_ANTHROPIC ||
-    config.authType === AuthType.USE_OPENAI
-  ) {
+  // Only OpenRouter is supported
+  if (config.authType === AuthType.USE_OPENROUTER) {
     return createOpenRouterContentGenerator(config);
   }
 
@@ -171,60 +87,26 @@ export async function createContentGenerator(
 function createOpenRouterContentGenerator(
   config: ContentGeneratorConfig
 ): ContentGenerator {
-  // Map Gemini model names to OpenRouter model names
+  // Map legacy Gemini model names to OpenRouter model names
   let mappedModel = config.model;
-  if (config.authType === AuthType.USE_OPENROUTER) {
-    switch (config.model) {
-      case 'gemini-2.5-pro':
-      case 'gemini-pro':
-        mappedModel = 'anthropic/claude-3.5-sonnet';
-        break;
-      case 'gemini-2.5-flash':
-      case 'gemini-flash':
-        mappedModel = 'anthropic/claude-3-haiku';
-        break;
-      default:
-        // If it's already a valid OpenRouter model format, keep it
-        if (!mappedModel.includes('/')) {
-          mappedModel = 'anthropic/claude-3.5-sonnet'; // Default fallback
-        }
-    }
-  } else if (config.authType === AuthType.USE_ANTHROPIC) {
-    switch (config.model) {
-      case 'gemini-2.5-pro':
-      case 'gemini-pro':
-        mappedModel = 'claude-3-5-sonnet-latest';
-        break;
-      case 'gemini-2.5-flash':
-      case 'gemini-flash':
-        mappedModel = 'claude-3-haiku-20240307';
-        break;
-      default:
-        if (!mappedModel.startsWith('claude-')) {
-          mappedModel = 'claude-3-5-sonnet-latest';
-        }
-    }
-  } else if (config.authType === AuthType.USE_OPENAI) {
-    switch (config.model) {
-      case 'gemini-2.5-pro':
-      case 'gemini-pro':
-        mappedModel = 'gpt-4';
-        break;
-      case 'gemini-2.5-flash':
-      case 'gemini-flash':
-        mappedModel = 'gpt-3.5-turbo';
-        break;
-      default:
-        if (!mappedModel.startsWith('gpt-')) {
-          mappedModel = 'gpt-4';
-        }
-    }
+  switch (config.model) {
+    case 'gemini-2.5-pro':
+    case 'gemini-pro':
+      mappedModel = 'anthropic/claude-3.5-sonnet';
+      break;
+    case 'gemini-2.5-flash':
+    case 'gemini-flash':
+      mappedModel = 'anthropic/claude-3-haiku';
+      break;
+    default:
+      // If it's already a valid OpenRouter model format, keep it
+      if (!mappedModel.includes('/')) {
+        mappedModel = 'anthropic/claude-3.5-sonnet'; // Default fallback
+      }
   }
 
   const modelConfig = {
-    provider: config.authType === AuthType.USE_OPENROUTER ? 'openrouter' : 
-             config.authType === AuthType.USE_ANTHROPIC ? 'anthropic' : 
-             'openai',
+    provider: 'openrouter',
     model: mappedModel,
     apiKey: config.apiKey || '',
   };
