@@ -59,8 +59,7 @@ export class StartSessionEvent {
     this['event.name'] = 'cli_config';
     this.model = config.getModel();
     this.embedding_model = config.getEmbeddingModel();
-    this.sandbox_enabled =
-      typeof config.getSandbox() === 'string' || !!config.getSandbox();
+    this.sandbox_enabled = false; // sandbox removed for writing CLI
     this.core_tools_enabled = (config.getCoreTools() ?? []).join(',');
     this.approval_mode = config.getApprovalMode();
     this.api_key_enabled = useOpenRouter;

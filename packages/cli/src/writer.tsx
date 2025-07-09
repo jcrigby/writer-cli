@@ -13,7 +13,6 @@ import { basename } from 'node:path';
 import v8 from 'node:v8';
 import os from 'node:os';
 import { spawn } from 'node:child_process';
-import { start_sandbox } from './utils/sandbox.js';
 import {
   LoadedSettings,
   loadSettings,
@@ -165,33 +164,10 @@ export async function main() {
     ? getNodeMemoryArgs(config)
     : [];
 
-  // hop into sandbox if we are outside and sandboxing is enabled
-  if (!process.env.SANDBOX) {
-    const sandboxConfig = config.getSandbox();
-    if (sandboxConfig) {
-      if (settings.merged.selectedAuthType) {
-        // Validate authentication here because the sandbox will interfere with the Oauth2 web redirect.
-        try {
-          const err = validateAuthMethod(settings.merged.selectedAuthType);
-          if (err) {
-            throw new Error(err);
-          }
-          await config.refreshAuth(settings.merged.selectedAuthType);
-        } catch (err) {
-          console.error('Error authenticating:', err);
-          process.exit(1);
-        }
-      }
-      await start_sandbox(sandboxConfig, memoryArgs);
-      process.exit(0);
-    } else {
-      // Not in a sandbox and not entering one, so relaunch with additional
-      // arguments to control memory usage if needed.
-      if (memoryArgs.length > 0) {
-        await relaunchWithAdditionalArgs(memoryArgs);
-        process.exit(0);
-      }
-    }
+  // Memory management for Writer CLI
+  if (memoryArgs.length > 0) {
+    await relaunchWithAdditionalArgs(memoryArgs);
+    process.exit(0);
   }
   let input = config.getQuestion();
   const startupWarnings = await getStartupWarnings();

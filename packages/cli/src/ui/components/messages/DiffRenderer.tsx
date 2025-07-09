@@ -8,7 +8,7 @@ import React from 'react';
 import { Box, Text } from 'ink';
 import { Colors } from '../../colors.js';
 import crypto from 'crypto';
-import { colorizeCode } from '../../utils/CodeColorizer.js';
+// Removed CodeColorizer import - using plain text for writing-focused CLI
 import { MaxSizedBox } from '../shared/MaxSizedBox.js';
 
 interface DiffLine {
@@ -141,12 +141,8 @@ export const DiffRenderer: React.FC<DiffRendererProps> = ({
     const language = fileExtension
       ? getLanguageFromExtension(fileExtension)
       : null;
-    renderedOutput = colorizeCode(
-      addedContent,
-      language,
-      availableTerminalHeight,
-      terminalWidth,
-    );
+    // Just show plain text for writing-focused CLI
+    renderedOutput = <Text>{addedContent}</Text>;
   } else {
     renderedOutput = renderDiffContent(
       parsedLines,

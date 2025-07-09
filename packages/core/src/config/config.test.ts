@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { Config, ConfigParameters, SandboxConfig } from './config.js';
+import { Config, ConfigParameters } from './config.js';
 import * as path from 'path';
 import { setGeminiMdFilename as mockSetGeminiMdFilename } from '../tools/memoryTool.js';
 import {
@@ -67,10 +67,7 @@ vi.mock('../telemetry/index.js', async (importOriginal) => {
 
 describe('Server Config (config.ts)', () => {
   const MODEL = 'gemini-pro';
-  const SANDBOX: SandboxConfig = {
-    command: 'docker',
-    image: 'writer-cli-sandbox',
-  };
+  // SANDBOX config removed for writing CLI
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
   const QUESTION = 'test question';
@@ -82,7 +79,7 @@ describe('Server Config (config.ts)', () => {
   const baseParams: ConfigParameters = {
     cwd: '/tmp',
     embeddingModel: EMBEDDING_MODEL,
-    sandbox: SANDBOX,
+    // sandbox removed for writing CLI
     targetDir: TARGET_DIR,
     debugMode: DEBUG_MODE,
     question: QUESTION,

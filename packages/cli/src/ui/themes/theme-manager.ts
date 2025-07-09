@@ -10,11 +10,9 @@ import { AtomOneDark } from './atom-one-dark.js';
 import { Dracula } from './dracula.js';
 import { GitHubDark } from './github-dark.js';
 import { GitHubLight } from './github-light.js';
-import { GoogleCode } from './googlecode.js';
 import { DefaultLight } from './default-light.js';
 import { DefaultDark } from './default.js';
 import { ShadesOfPurple } from './shades-of-purple.js';
-import { XCode } from './xcode.js';
 import { Theme, ThemeType } from './theme.js';
 import { ANSI } from './ansi.js';
 import { ANSILight } from './ansi-light.js';
@@ -42,9 +40,7 @@ class ThemeManager {
       DefaultDark,
       GitHubDark,
       GitHubLight,
-      GoogleCode,
       ShadesOfPurple,
-      XCode,
       ANSI,
       ANSILight,
     ];

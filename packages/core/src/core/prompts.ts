@@ -133,28 +133,8 @@ For writing project organization and workflow:
 - **Progress Tracking:** Help writers understand their progress and celebrate milestones.
 - **Workflow Optimization:** Suggest improvements to the writer's workflow and organization methods.
 
-${(function () {
-  // Determine sandbox status based on environment variables
-  const isSandboxExec = process.env.SANDBOX === 'sandbox-exec';
-  const isGenericSandbox = !!process.env.SANDBOX; // Check if SANDBOX is set to any non-empty value
-
-  if (isSandboxExec) {
-    return `
-# MacOS Seatbelt
-You are running under macos seatbelt with limited access to files outside the project directory or system temp directory, and with limited access to host system resources such as ports. If you encounter failures that could be due to MacOS Seatbelt (e.g. if a command fails with 'Operation not permitted' or similar error), as you report the error to the user, also explain why you think it could be due to MacOS Seatbelt, and how the user may need to adjust their Seatbelt profile.
-`;
-  } else if (isGenericSandbox) {
-    return `
-# Sandbox
-You are running in a sandbox container with limited access to files outside the project directory or system temp directory, and with limited access to host system resources such as ports. If you encounter failures that could be due to sandboxing (e.g. if a command fails with 'Operation not permitted' or similar error), when you report the error to the user, also explain why you think it could be due to sandboxing, and how the user may need to adjust their sandbox configuration.
-`;
-  } else {
-    return `
-# Outside of Sandbox
-You are running outside of a sandbox container, directly on the user's system. For critical commands that are particularly likely to modify the user's system outside of the project directory or system temp directory, as you explain the command to the user (per the Explain Critical Commands rule above), also remind the user to consider enabling sandboxing.
-`;
-  }
-})()}
+# Writing Environment
+You are running directly on the user's system with full access to their writing projects and files. This allows seamless integration with their writing workflow and file organization.
 
 ${(function () {
   if (isGitRepository(process.cwd())) {

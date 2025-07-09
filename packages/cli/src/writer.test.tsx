@@ -55,10 +55,7 @@ vi.mock('update-notifier', () => ({
   })),
 }));
 
-vi.mock('./utils/sandbox.js', () => ({
-  sandbox_command: vi.fn(() => ''), // Default to no sandbox command
-  start_sandbox: vi.fn(() => Promise.resolve()), // Mock as an async function that resolves
-}));
+// sandbox mocks removed for writing CLI
 
 describe('gemini.tsx main function', () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
@@ -75,7 +72,7 @@ describe('gemini.tsx main function', () => {
   beforeEach(() => {
     loadSettingsMock = vi.mocked(loadSettings);
 
-    // Store and clear sandbox-related env variables to ensure a consistent test environment
+    // sandbox-related env variables removed for writing CLI
     originalEnvGeminiSandbox = process.env.GEMINI_SANDBOX;
     originalEnvSandbox = process.env.SANDBOX;
     delete process.env.GEMINI_SANDBOX;

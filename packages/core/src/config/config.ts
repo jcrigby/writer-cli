@@ -87,10 +87,7 @@ export class MCPServerConfig {
   ) {}
 }
 
-export interface SandboxConfig {
-  command: 'docker' | 'podman' | 'sandbox-exec';
-  image: string;
-}
+// SandboxConfig removed - not needed for writing-focused CLI
 
 export type FlashFallbackHandler = (
   currentModel: string,
@@ -100,7 +97,7 @@ export type FlashFallbackHandler = (
 export interface ConfigParameters {
   sessionId: string;
   embeddingModel?: string;
-  sandbox?: SandboxConfig;
+  // sandbox removed - not needed for writing CLI
   targetDir: string;
   debugMode: boolean;
   question?: string;
@@ -137,7 +134,7 @@ export class Config {
   private readonly sessionId: string;
   private contentGeneratorConfig!: ContentGeneratorConfig;
   private readonly embeddingModel: string;
-  private readonly sandbox: SandboxConfig | undefined;
+  // sandbox removed - not needed for writing CLI
   private readonly targetDir: string;
   private readonly debugMode: boolean;
   private readonly question: string | undefined;
@@ -175,7 +172,7 @@ export class Config {
     this.sessionId = params.sessionId;
     this.embeddingModel =
       params.embeddingModel ?? DEFAULT_GEMINI_EMBEDDING_MODEL;
-    this.sandbox = params.sandbox;
+    // sandbox removed - not needed for writing CLI
     this.targetDir = path.resolve(params.targetDir);
     this.debugMode = params.debugMode;
     this.question = params.question;
@@ -295,9 +292,7 @@ export class Config {
     return this.embeddingModel;
   }
 
-  getSandbox(): SandboxConfig | undefined {
-    return this.sandbox;
-  }
+  // getSandbox removed - not needed for writing CLI
 
   getTargetDir(): string {
     return this.targetDir;

@@ -9,8 +9,6 @@ import { Box, Text, useInput } from 'ink';
 import { Colors } from '../colors.js';
 import { themeManager, DEFAULT_THEME } from '../themes/theme-manager.js';
 import { RadioButtonSelect } from './shared/RadioButtonSelect.js';
-import { DiffRenderer } from './messages/DiffRenderer.js';
-import { colorizeCode } from '../utils/CodeColorizer.js';
 import { LoadedSettings, SettingScope } from '../../config/settings.js';
 
 interface ThemeDialogProps {
@@ -221,29 +219,28 @@ export function ThemeDialog({
             paddingRight={1}
             flexDirection="column"
           >
-            {colorizeCode(
-              `# function
--def fibonacci(n):
--    a, b = 0, 1
--    for _ in range(n):
--        a, b = b, a + b
--    return a`,
-              'python',
-              codeBlockHeight,
-              colorizeCodeWidth,
-            )}
+            <Text>
+              📝 Writing Preview
+              
+              The quick brown fox jumps over the lazy dog.
+              This is a sample of how text will appear in
+              your chosen theme.
+              
+              "Dialogue looks like this," she said.
+              
+              *Italics* and **bold** formatting.
+            </Text>
             <Box marginTop={1} />
-            <DiffRenderer
-              diffContent={`--- a/old_file.txt
--+++ b/new_file.txt
--@@ -1,4 +1,5 @@
-- This is a context line.
---This line was deleted.
--+This line was added.
--`}
-              availableTerminalHeight={diffHeight}
-              terminalWidth={colorizeCodeWidth}
-            />
+            <Text>
+              🎨 Theme Colors:
+              
+              <Text color={Colors.AccentBlue}>Blue text</Text>
+              <Text color={Colors.AccentGreen}> Green text</Text>
+              <Text color={Colors.AccentRed}> Red text</Text>
+              <Text color={Colors.AccentPurple}> Purple text</Text>
+              
+              <Text color={Colors.Gray}>Muted text</Text>
+            </Text>
           </Box>
         </Box>
       </Box>

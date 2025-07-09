@@ -13,7 +13,7 @@ import path from 'path';
 
 export type PackageJson = BasePackageJson & {
   config?: {
-    sandboxImageUri?: string;
+    // sandboxImageUri removed for writing CLI
   };
 };
 

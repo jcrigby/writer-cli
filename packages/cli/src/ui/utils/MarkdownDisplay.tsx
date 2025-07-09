@@ -7,7 +7,6 @@
 import React from 'react';
 import { Text, Box } from 'ink';
 import { Colors } from '../colors.js';
-import { colorizeCode } from './CodeColorizer.js';
 import { TableRenderer } from './TableRenderer.js';
 
 interface MarkdownDisplayProps {
@@ -448,15 +447,9 @@ const RenderCodeBlockInternal: React.FC<RenderCodeBlockProps> = ({
         );
       }
       const truncatedContent = content.slice(0, MAX_CODE_LINES_WHEN_PENDING);
-      const colorizedTruncatedCode = colorizeCode(
-        truncatedContent.join('\n'),
-        lang,
-        availableTerminalHeight,
-        terminalWidth - CODE_BLOCK_PADDING * 2,
-      );
       return (
         <Box flexDirection="column" padding={CODE_BLOCK_PADDING}>
-          {colorizedTruncatedCode}
+          <Text>{truncatedContent.join('\n')}</Text>
           <Text color={Colors.Gray}>... generating more ...</Text>
         </Box>
       );
@@ -464,13 +457,7 @@ const RenderCodeBlockInternal: React.FC<RenderCodeBlockProps> = ({
   }
 
   const fullContent = content.join('\n');
-  const colorizedCode = colorizeCode(
-    fullContent,
-    lang,
-    availableTerminalHeight,
-    terminalWidth - CODE_BLOCK_PADDING * 2,
-  );
-
+  // Just display as plain text for writing-focused CLI
   return (
     <Box
       flexDirection="column"
@@ -478,7 +465,7 @@ const RenderCodeBlockInternal: React.FC<RenderCodeBlockProps> = ({
       width={terminalWidth}
       flexShrink={0}
     >
-      {colorizedCode}
+      <Text>{fullContent}</Text>
     </Box>
   );
 };
