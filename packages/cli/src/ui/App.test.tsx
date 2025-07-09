@@ -13,7 +13,6 @@ import {
   ApprovalMode,
   ToolRegistry,
   AccessibilitySettings,
-  // SandboxConfig removed for writing CLI
 } from 'writer-cli-core';
 import { LoadedSettings, SettingsFile, Settings } from '../config/settings.js';
 import process from 'node:process';

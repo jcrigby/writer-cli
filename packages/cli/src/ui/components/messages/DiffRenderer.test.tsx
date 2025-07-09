@@ -4,9 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// Tests disabled - CodeColorizer removed for writing-focused CLI
-// TODO: Update tests to work without code colorization
-
 import { vi, describe } from 'vitest';
 
 describe.skip('DiffRenderer', () => {

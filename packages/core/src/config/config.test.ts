@@ -67,7 +67,6 @@ vi.mock('../telemetry/index.js', async (importOriginal) => {
 
 describe('Server Config (config.ts)', () => {
   const MODEL = 'gemini-pro';
-  // SANDBOX config removed for writing CLI
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;
   const QUESTION = 'test question';

@@ -27,7 +27,6 @@ import * as dotenv from 'dotenv';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
-// sandbox config removed for writing CLI
 
 // Simple console logger for now - replace with actual logger if available
 const logger = {
@@ -41,7 +40,6 @@ const logger = {
 
 interface CliArgs {
   model: string | undefined;
-  // sandbox options removed for writing CLI
   debug: boolean | undefined;
   prompt: string | undefined;
   all_files: boolean | undefined;
@@ -67,8 +65,7 @@ async function parseArguments(): Promise<CliArgs> {
       type: 'string',
       description: 'Prompt. Appended to input on stdin (if any).',
     })
-    // sandbox options removed for writing CLI
-    .option('debug', {
+      .option('debug', {
       alias: 'd',
       type: 'boolean',
       description: 'Run in debug mode?',
@@ -187,12 +184,10 @@ export async function loadCliConfig(
   const mcpServers = mergeMcpServers(settings, extensions);
   const excludeTools = mergeExcludeTools(settings, extensions);
 
-  // sandbox config removed for writing CLI
-
+  
   return new Config({
     sessionId,
     embeddingModel: DEFAULT_GEMINI_EMBEDDING_MODEL,
-    // sandbox removed for writing CLI
     targetDir: process.cwd(),
     debugMode,
     question: argv.prompt || '',
