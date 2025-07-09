@@ -25,9 +25,9 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   let displayTitle;
   
-  // Choose appropriate logos based on whether we're in a writing project
-  const longLogo = writingProject ? writerLongLogo : longAsciiLogo;
-  const shortLogo = writingProject ? writerShortLogo : shortAsciiLogo;
+  // Always use Writer logos
+  const longLogo = writerLongLogo;
+  const shortLogo = writerShortLogo;
   const widthOfLongLogo = getAsciiArtWidth(longLogo);
 
   if (customAsciiArt) {

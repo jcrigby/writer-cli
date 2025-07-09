@@ -8,7 +8,7 @@ import { spawn } from 'child_process';
 import { StringDecoder } from 'string_decoder';
 import type { HistoryItemWithoutId } from '../types.js';
 import { useCallback } from 'react';
-import { Config, GeminiClient } from 'writer-cli-core';
+import { Config, WriterClient } from 'writer-cli-core';
 import { type PartListUnion } from '@google/genai';
 import { formatMemoryUsage } from '../utils/formatters.js';
 import { isBinary } from '../utils/textUtils.js';
@@ -173,7 +173,7 @@ function executeShellCommand(
 }
 
 function addShellCommandToGeminiHistory(
-  geminiClient: GeminiClient,
+  geminiClient: WriterClient,
   rawQuery: string,
   resultText: string,
 ) {
@@ -212,7 +212,7 @@ export const useShellCommandProcessor = (
   onExec: (command: Promise<void>) => void,
   onDebugMessage: (message: string) => void,
   config: Config,
-  geminiClient: GeminiClient,
+  geminiClient: WriterClient,
 ) => {
   const handleShellCommand = useCallback(
     (rawQuery: PartListUnion, abortSignal: AbortSignal): boolean => {

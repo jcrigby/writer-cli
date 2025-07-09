@@ -7,7 +7,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { runNonInteractive } from './nonInteractiveCli.js';
-import { Config, GeminiClient, ToolRegistry } from 'writer-cli-core';
+import { Config, WriterClient, ToolRegistry } from 'writer-cli-core';
 import { GenerateContentResponse, Part, FunctionCall } from '@google/genai';
 
 // Mock dependencies
@@ -17,7 +17,7 @@ vi.mock('writer-cli-core', async () => {
   >('writer-cli-core');
   return {
     ...actualCore,
-    GeminiClient: vi.fn(),
+    WriterClient: vi.fn(),
     ToolRegistry: vi.fn(),
     executeToolCall: vi.fn(),
   };
@@ -25,7 +25,7 @@ vi.mock('writer-cli-core', async () => {
 
 describe('runNonInteractive', () => {
   let mockConfig: Config;
-  let mockGeminiClient: GeminiClient;
+  let mockGeminiClient: WriterClient;
   let mockToolRegistry: ToolRegistry;
   let mockChat: {
     sendMessageStream: ReturnType<typeof vi.fn>;
@@ -40,13 +40,13 @@ describe('runNonInteractive', () => {
     };
     mockGeminiClient = {
       getChat: vi.fn().mockResolvedValue(mockChat),
-    } as unknown as GeminiClient;
+    } as unknown as WriterClient;
     mockToolRegistry = {
       getFunctionDeclarations: vi.fn().mockReturnValue([]),
       getTool: vi.fn(),
     } as unknown as ToolRegistry;
 
-    vi.mocked(GeminiClient).mockImplementation(() => mockGeminiClient);
+    vi.mocked(WriterClient).mockImplementation(() => mockGeminiClient);
     vi.mocked(ToolRegistry).mockImplementation(() => mockToolRegistry);
 
     mockConfig = {

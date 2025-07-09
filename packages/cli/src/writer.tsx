@@ -242,7 +242,7 @@ export async function main() {
 
 function setWindowTitle(title: string, settings: LoadedSettings) {
   if (!settings.merged.hideWindowTitle) {
-    process.stdout.write(`\x1b]2; Gemini - ${title} \x07`);
+    process.stdout.write(`\x1b]2; Writer - ${title} \x07`);
 
     process.on('exit', () => {
       process.stdout.write(`\x1b]2;\x07`);

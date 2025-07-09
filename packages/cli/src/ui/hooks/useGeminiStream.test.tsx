@@ -29,7 +29,7 @@ const mockSendMessageStream = vi
   .mockReturnValue((async function* () {})());
 const mockStartChat = vi.fn();
 
-const MockedGeminiClientClass = vi.hoisted(() =>
+const MockedWriterClientClass = vi.hoisted(() =>
   vi.fn().mockImplementation(function (this: any, _config: any) {
     // _config
     this.startChat = mockStartChat;
@@ -47,7 +47,7 @@ vi.mock('writer-cli-core', async (importOriginal) => {
   return {
     ...actualCoreModule,
     GitService: vi.fn(),
-    GeminiClient: MockedGeminiClientClass,
+    WriterClient: MockedWriterClientClass,
     UserPromptEvent: MockedUserPromptEvent,
   };
 });
@@ -259,11 +259,11 @@ describe('useWriterStream', () => {
 
     mockAddItem = vi.fn();
     mockSetShowHelp = vi.fn();
-    // Define the mock for getGeminiClient
-    const mockGetGeminiClient = vi.fn().mockImplementation(() => {
-      // MockedGeminiClientClass is defined in the module scope by the previous change.
+    // Define the mock for getWriterClient
+    const mockGetWriterClient = vi.fn().mockImplementation(() => {
+      // MockedWriterClientClass is defined in the module scope by the previous change.
       // It will use the mockStartChat and mockSendMessageStream that are managed within beforeEach.
-      const clientInstance = new MockedGeminiClientClass(mockConfig);
+      const clientInstance = new MockedWriterClientClass(mockConfig);
       return clientInstance;
     });
 
@@ -292,7 +292,7 @@ describe('useWriterStream', () => {
       ),
       getProjectRoot: vi.fn(() => '/test/dir'),
       getCheckpointingEnabled: vi.fn(() => false),
-      getGeminiClient: mockGetGeminiClient,
+      getWriterClient: mockGetWriterClient,
       getUsageStatisticsEnabled: () => true,
       getDebugMode: () => false,
       addHistory: vi.fn(),
@@ -313,8 +313,8 @@ describe('useWriterStream', () => {
       mockMarkToolsAsSubmitted,
     ]);
 
-    // Reset mocks for GeminiClient instance methods (startChat and sendMessageStream)
-    // The GeminiClient constructor itself is mocked at the module level.
+    // Reset mocks for WriterClient instance methods (startChat and sendMessageStream)
+    // The WriterClient constructor itself is mocked at the module level.
     mockStartChat.mockClear().mockResolvedValue({
       sendMessageStream: mockSendMessageStream,
     } as unknown as any); // GeminiChat -> any
@@ -348,7 +348,7 @@ describe('useWriterStream', () => {
       mockMarkToolsAsSubmitted,
     ]);
 
-    const client = geminiClient || mockConfig.getGeminiClient();
+    const client = geminiClient || mockConfig.getWriterClient();
 
     const { result, rerender } = renderHook(
       (props: {
@@ -508,7 +508,7 @@ describe('useWriterStream', () => {
 
     renderHook(() =>
       useWriterStream(
-        new MockedGeminiClientClass(mockConfig),
+        new MockedWriterClientClass(mockConfig),
         [],
         mockAddItem,
         mockSetShowHelp,
@@ -558,7 +558,7 @@ describe('useWriterStream', () => {
         responseSubmittedToGemini: false,
       } as TrackedCancelledToolCall,
     ];
-    const client = new MockedGeminiClientClass(mockConfig);
+    const client = new MockedWriterClientClass(mockConfig);
 
     // Capture the onComplete callback
     let capturedOnComplete:
@@ -659,7 +659,7 @@ describe('useWriterStream', () => {
 
     const { result, rerender } = renderHook(() =>
       useWriterStream(
-        new MockedGeminiClientClass(mockConfig),
+        new MockedWriterClientClass(mockConfig),
         [],
         mockAddItem,
         mockSetShowHelp,
@@ -903,7 +903,7 @@ describe('useWriterStream', () => {
 
       const { result } = renderHook(() =>
         useWriterStream(
-          new MockedGeminiClientClass(mockConfig),
+          new MockedWriterClientClass(mockConfig),
           [],
           mockAddItem,
           mockSetShowHelp,
@@ -978,7 +978,7 @@ describe('useWriterStream', () => {
 
       renderHook(() =>
         useWriterStream(
-          new MockedGeminiClientClass(mockConfig),
+          new MockedWriterClientClass(mockConfig),
           [],
           mockAddItem,
           mockSetShowHelp,
@@ -1027,7 +1027,7 @@ describe('useWriterStream', () => {
 
       const { result } = renderHook(() =>
         useWriterStream(
-          new MockedGeminiClientClass(testConfig),
+          new MockedWriterClientClass(testConfig),
           [],
           mockAddItem,
           mockSetShowHelp,

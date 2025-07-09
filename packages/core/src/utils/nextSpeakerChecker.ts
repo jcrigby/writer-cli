@@ -5,7 +5,7 @@
  */
 
 import { Content, SchemaUnion, Type } from '@google/genai';
-import { GeminiClient } from '../core/client.js';
+import { WriterClient } from '../core/client.js';
 import { GeminiChat } from '../core/geminiChat.js';
 import { isFunctionResponse } from './messageInspectors.js';
 
@@ -60,7 +60,7 @@ export interface NextSpeakerResponse {
 
 export async function checkNextSpeaker(
   chat: GeminiChat,
-  geminiClient: GeminiClient,
+  geminiClient: WriterClient,
   abortSignal: AbortSignal,
 ): Promise<NextSpeakerResponse | null> {
   // We need to capture the curated history because there are many moments when the model will return invalid turns

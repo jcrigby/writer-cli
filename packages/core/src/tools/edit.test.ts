@@ -15,7 +15,7 @@ vi.mock('../utils/editCorrector.js', () => ({
 }));
 
 vi.mock('../core/client.js', () => ({
-  GeminiClient: vi.fn().mockImplementation(() => ({
+  WriterClient: vi.fn().mockImplementation(() => ({
     generateJson: mockGenerateJson,
   })),
 }));

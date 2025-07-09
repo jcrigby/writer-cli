@@ -12,7 +12,7 @@ import {
   GenerateContentResponse,
   GoogleGenAI,
 } from '@google/genai';
-import { GeminiClient } from './client.js';
+import { WriterClient } from './client.js';
 import { AuthType, ContentGenerator } from './contentGenerator.js';
 import { GeminiChat } from './geminiChat.js';
 import { Config } from '../config/config.js';
@@ -66,7 +66,7 @@ vi.mock('../telemetry/index.js', () => ({
 }));
 
 describe('Gemini Client (client.ts)', () => {
-  let client: GeminiClient;
+  let client: WriterClient;
   beforeEach(async () => {
     vi.resetAllMocks();
 
@@ -97,7 +97,7 @@ describe('Gemini Client (client.ts)', () => {
       ],
     } as unknown as GenerateContentResponse);
 
-    // Because the GeminiClient constructor kicks off an async process (startChat)
+    // Because the WriterClient constructor kicks off an async process (startChat)
     // that depends on a fully-formed Config object, we need to mock the
     // entire implementation of Config for these tests.
     const mockToolRegistry = {
@@ -136,7 +136,7 @@ describe('Gemini Client (client.ts)', () => {
     // We can instantiate the client here since Config is mocked
     // and the constructor will use the mocked GoogleGenAI
     const mockConfig = new Config({} as never);
-    client = new GeminiClient(mockConfig);
+    client = new WriterClient(mockConfig);
     await client.initialize(contentGeneratorConfig);
   });
 
@@ -146,10 +146,10 @@ describe('Gemini Client (client.ts)', () => {
 
   // NOTE: The following tests for startChat were removed due to persistent issues with
   // the @google/genai mock. Specifically, the mockChatCreateFn (representing instance.chats.create)
-  // was not being detected as called by the GeminiClient instance.
+  // was not being detected as called by the WriterClient instance.
   // This likely points to a subtle issue in how the GoogleGenerativeAI class constructor
   // and its instance methods are mocked and then used by the class under test.
-  // For future debugging, ensure that the `this.client` in `GeminiClient` (which is an
+  // For future debugging, ensure that the `this.client` in `WriterClient` (which is an
   // instance of the mocked GoogleGenerativeAI) correctly has its `chats.create` method
   // pointing to `mockChatCreateFn`.
   // it('startChat should call getCoreSystemPrompt with userMemory and pass to chats.create', async () => { ... });
@@ -159,7 +159,7 @@ describe('Gemini Client (client.ts)', () => {
   // the @google/genai mock, similar to the startChat tests. The mockGenerateContentFn
   // (representing instance.models.generateContent) was not being detected as called, or the mock
   // was not preventing an actual API call (leading to API key errors).
-  // For future debugging, ensure `this.client.models.generateContent` in `GeminiClient` correctly
+  // For future debugging, ensure `this.client.models.generateContent` in `WriterClient` correctly
   // uses the `mockGenerateContentFn`.
   // it('generateJson should call getCoreSystemPrompt with userMemory and pass to generateContent', async () => { ... });
   // it('generateJson should call getCoreSystemPrompt with empty string if userMemory is empty', async () => { ... });

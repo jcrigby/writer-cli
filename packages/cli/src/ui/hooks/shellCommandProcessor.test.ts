@@ -7,7 +7,7 @@
 import { act, renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
 import { useShellCommandProcessor } from './shellCommandProcessor';
-import { Config, GeminiClient } from 'writer-cli-core';
+import { Config, WriterClient } from 'writer-cli-core';
 import * as fs from 'fs';
 import EventEmitter from 'events';
 
@@ -34,7 +34,7 @@ describe('useShellCommandProcessor', () => {
   let onExecMock: vi.Mock;
   let onDebugMessageMock: vi.Mock;
   let configMock: Config;
-  let geminiClientMock: GeminiClient;
+  let geminiClientMock: WriterClient;
 
   beforeEach(async () => {
     const { spawn } = await import('child_process');
@@ -58,7 +58,7 @@ describe('useShellCommandProcessor', () => {
 
     geminiClientMock = {
       addHistory: vi.fn(),
-    } as unknown as GeminiClient;
+    } as unknown as WriterClient;
   });
 
   afterEach(() => {

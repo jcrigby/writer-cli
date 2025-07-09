@@ -8,7 +8,7 @@ import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import { useInput } from 'ink';
 import {
   Config,
-  GeminiClient,
+  WriterClient,
   GeminiEventType as ServerGeminiEventType,
   ServerGeminiStreamEvent as GeminiEvent,
   ServerGeminiContentEvent as ContentEvent,
@@ -76,7 +76,7 @@ enum StreamProcessingStatus {
  * API interaction, and tool call lifecycle.
  */
 export const useWriterStream = (
-  geminiClient: GeminiClient,
+  geminiClient: WriterClient,
   history: HistoryItem[],
   addItem: UseHistoryManagerReturn['addItem'],
   setShowHelp: React.Dispatch<React.SetStateAction<boolean>>,
