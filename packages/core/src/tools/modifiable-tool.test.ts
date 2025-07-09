@@ -124,7 +124,7 @@ describe('modifyWithEditor', () => {
       expect(fs.writeFileSync).toHaveBeenNthCalledWith(
         1,
         expect.stringContaining(
-          path.join(tempDir, 'gemini-cli-tool-modify-diffs'),
+          path.join(tempDir, 'writer-cli-tool-modify-diffs'),
         ),
         currentContent,
         'utf8',
@@ -132,7 +132,7 @@ describe('modifyWithEditor', () => {
       expect(fs.writeFileSync).toHaveBeenNthCalledWith(
         2,
         expect.stringContaining(
-          path.join(tempDir, 'gemini-cli-tool-modify-diffs'),
+          path.join(tempDir, 'writer-cli-tool-modify-diffs'),
         ),
         proposedContent,
         'utf8',
@@ -202,7 +202,7 @@ describe('modifyWithEditor', () => {
       );
 
       expect(fs.mkdirSync).toHaveBeenCalledWith(
-        path.join(tempDir, 'gemini-cli-tool-modify-diffs'),
+        path.join(tempDir, 'writer-cli-tool-modify-diffs'),
         { recursive: true },
       );
     });
@@ -343,10 +343,10 @@ describe('modifyWithEditor', () => {
     const oldFilePath = writeFileCalls[0][0];
     const newFilePath = writeFileCalls[1][0];
 
-    expect(oldFilePath).toMatch(/gemini-cli-modify-test-file-old-\d+\.txt$/);
-    expect(newFilePath).toMatch(/gemini-cli-modify-test-file-new-\d+\.txt$/);
-    expect(oldFilePath).toContain(`${tempDir}/gemini-cli-tool-modify-diffs/`);
-    expect(newFilePath).toContain(`${tempDir}/gemini-cli-tool-modify-diffs/`);
+    expect(oldFilePath).toMatch(/writer-cli-modify-test-file-old-\d+\.txt$/);
+    expect(newFilePath).toMatch(/writer-cli-modify-test-file-new-\d+\.txt$/);
+    expect(oldFilePath).toContain(`${tempDir}/writer-cli-tool-modify-diffs/`);
+    expect(newFilePath).toContain(`${tempDir}/writer-cli-tool-modify-diffs/`);
   });
 
   it('should create temp files with correct naming without extension', async () => {
@@ -366,10 +366,10 @@ describe('modifyWithEditor', () => {
     const oldFilePath = writeFileCalls[0][0];
     const newFilePath = writeFileCalls[1][0];
 
-    expect(oldFilePath).toMatch(/gemini-cli-modify-test-file-old-\d+$/);
-    expect(newFilePath).toMatch(/gemini-cli-modify-test-file-new-\d+$/);
-    expect(oldFilePath).toContain(`${tempDir}/gemini-cli-tool-modify-diffs/`);
-    expect(newFilePath).toContain(`${tempDir}/gemini-cli-tool-modify-diffs/`);
+    expect(oldFilePath).toMatch(/writer-cli-modify-test-file-old-\d+$/);
+    expect(newFilePath).toMatch(/writer-cli-modify-test-file-new-\d+$/);
+    expect(oldFilePath).toContain(`${tempDir}/writer-cli-tool-modify-diffs/`);
+    expect(newFilePath).toContain(`${tempDir}/writer-cli-tool-modify-diffs/`);
   });
 });
 

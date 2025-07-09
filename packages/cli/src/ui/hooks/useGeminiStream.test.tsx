@@ -7,7 +7,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
-import { useGeminiStream, mergePartListUnions } from './useGeminiStream.js';
+import { useWriterStream, mergePartListUnions } from './useWriterStream.js';
 import { useInput } from 'ink';
 import {
   useReactToolScheduler,
@@ -243,8 +243,8 @@ describe('mergePartListUnions', () => {
   });
 });
 
-// --- Tests for useGeminiStream Hook ---
-describe('useGeminiStream', () => {
+// --- Tests for useWriterStream Hook ---
+describe('useWriterStream', () => {
   let mockAddItem: Mock;
   let mockSetShowHelp: Mock;
   let mockConfig: Config;
@@ -326,7 +326,7 @@ describe('useGeminiStream', () => {
   const mockLoadedSettings: LoadedSettings = {
     merged: { preferredEditor: 'vscode' },
     user: { path: '/user/settings.json', settings: {} },
-    workspace: { path: '/workspace/.gemini/settings.json', settings: {} },
+    workspace: { path: '/workspace/.writer/settings.json', settings: {} },
     errors: [],
     forScope: vi.fn(),
     setValue: vi.fn(),
@@ -372,7 +372,7 @@ describe('useGeminiStream', () => {
         if (props.toolCalls) {
           setToolCalls(props.toolCalls);
         }
-        return useGeminiStream(
+        return useWriterStream(
           props.client,
           props.history,
           props.addItem,
@@ -507,7 +507,7 @@ describe('useGeminiStream', () => {
     });
 
     renderHook(() =>
-      useGeminiStream(
+      useWriterStream(
         new MockedGeminiClientClass(mockConfig),
         [],
         mockAddItem,
@@ -571,7 +571,7 @@ describe('useGeminiStream', () => {
     });
 
     renderHook(() =>
-      useGeminiStream(
+      useWriterStream(
         client,
         [],
         mockAddItem,
@@ -658,7 +658,7 @@ describe('useGeminiStream', () => {
     });
 
     const { result, rerender } = renderHook(() =>
-      useGeminiStream(
+      useWriterStream(
         new MockedGeminiClientClass(mockConfig),
         [],
         mockAddItem,
@@ -902,7 +902,7 @@ describe('useGeminiStream', () => {
       });
 
       const { result } = renderHook(() =>
-        useGeminiStream(
+        useWriterStream(
           new MockedGeminiClientClass(mockConfig),
           [],
           mockAddItem,
@@ -977,7 +977,7 @@ describe('useGeminiStream', () => {
       });
 
       renderHook(() =>
-        useGeminiStream(
+        useWriterStream(
           new MockedGeminiClientClass(mockConfig),
           [],
           mockAddItem,
@@ -1026,7 +1026,7 @@ describe('useGeminiStream', () => {
       } as unknown as Config;
 
       const { result } = renderHook(() =>
-        useGeminiStream(
+        useWriterStream(
           new MockedGeminiClientClass(testConfig),
           [],
           mockAddItem,

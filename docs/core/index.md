@@ -1,18 +1,18 @@
-# Gemini CLI Core
+# Writer CLI Core
 
-Gemini CLI's core package (`packages/core`) is the backend portion of Gemini CLI, handling communication with the Gemini API, managing tools, and processing requests sent from `packages/cli`. For a general overview of Gemini CLI, see the [main documentation page](../index.md).
+Writer CLI's core package (`packages/core`) is the backend portion of Writer CLI, handling communication with the Gemini API, managing tools, and processing requests sent from `packages/cli`. For a general overview of Writer CLI, see the [main documentation page](../index.md).
 
 ## Navigating this section
 
 - **[Core tools API](./tools-api.md):** Information on how tools are defined, registered, and used by the core.
-- **[Memory Import Processor](./memport.md):** Documentation for the modular GEMINI.md import feature using @file.md syntax.
+- **[Memory Import Processor](./memport.md):** Documentation for the modular WRITER.md import feature using @file.md syntax.
 
 ## Role of the core
 
-While the `packages/cli` portion of Gemini CLI provides the user interface, `packages/core` is responsible for:
+While the `packages/cli` portion of Writer CLI provides the user interface, `packages/core` is responsible for:
 
 - **Gemini API interaction:** Securely communicating with the Google Gemini API, sending user prompts, and receiving model responses.
-- **Prompt engineering:** Constructing effective prompts for the Gemini model, potentially incorporating conversation history, tool definitions, and instructional context from `GEMINI.md` files.
+- **Prompt engineering:** Constructing effective prompts for the Gemini model, potentially incorporating conversation history, tool definitions, and instructional context from `WRITER.md` files.
 - **Tool management & orchestration:**
   - Registering available tools (e.g., file system tools, shell command execution).
   - Interpreting tool use requests from the Gemini model.
@@ -38,7 +38,7 @@ You can find the token limits for each model in the [Google AI documentation](ht
 
 ## Model fallback
 
-Gemini CLI includes a model fallback mechanism to ensure that you can continue to use the CLI even if the default "pro" model is rate-limited.
+Writer CLI includes a model fallback mechanism to ensure that you can continue to use the CLI even if the default "pro" model is rate-limited.
 
 If you are using the default "pro" model and the CLI detects that you are being rate-limited, it automatically switches to the "flash" model for the current session. This allows you to continue working without interruption.
 
@@ -48,8 +48,8 @@ The file discovery service is responsible for finding files in the project that 
 
 ## Memory discovery service
 
-The memory discovery service is responsible for finding and loading the `GEMINI.md` files that provide context to the model. It searches for these files in a hierarchical manner, starting from the current working directory and moving up to the project root and the user's home directory. It also searches in subdirectories.
+The memory discovery service is responsible for finding and loading the `WRITER.md` files that provide context to the model. It searches for these files in a hierarchical manner, starting from the current working directory and moving up to the project root and the user's home directory. It also searches in subdirectories.
 
 This allows you to have global, project-level, and component-level context files, which are all combined to provide the model with the most relevant information.
 
-You can use the [`/memory` command](../cli/commands.md) to `show`, `add`, and `refresh` the content of loaded `GEMINI.md` files.
+You can use the [`/memory` command](../cli/commands.md) to `show`, `add`, and `refresh` the content of loaded `WRITER.md` files.

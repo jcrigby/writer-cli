@@ -37,9 +37,9 @@ vi.mock('../tools/read-many-files');
 vi.mock('../tools/memoryTool', () => ({
   MemoryTool: vi.fn(),
   setGeminiMdFilename: vi.fn(),
-  getCurrentGeminiMdFilename: vi.fn(() => 'GEMINI.md'), // Mock the original filename
-  DEFAULT_CONTEXT_FILENAME: 'GEMINI.md',
-  GEMINI_CONFIG_DIR: '.gemini',
+  getCurrentGeminiMdFilename: vi.fn(() => 'WRITER.md'), // Mock the original filename
+  DEFAULT_CONTEXT_FILENAME: 'WRITER.md',
+  WRITER_CONFIG_DIR: '.gemini',
 }));
 
 vi.mock('../core/contentGenerator.js', async (importOriginal) => {
@@ -69,7 +69,7 @@ describe('Server Config (config.ts)', () => {
   const MODEL = 'gemini-pro';
   const SANDBOX: SandboxConfig = {
     command: 'docker',
-    image: 'gemini-cli-sandbox',
+    image: 'writer-cli-sandbox',
   };
   const TARGET_DIR = '/path/to/target';
   const DEBUG_MODE = false;

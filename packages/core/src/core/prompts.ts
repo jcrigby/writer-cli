@@ -16,18 +16,18 @@ import { ShellTool } from '../tools/shell.js';
 import { WriteFileTool } from '../tools/write-file.js';
 import process from 'node:process';
 import { isGitRepository } from '../utils/gitUtils.js';
-import { MemoryTool, GEMINI_CONFIG_DIR } from '../tools/memoryTool.js';
+import { MemoryTool, WRITER_CONFIG_DIR } from '../tools/memoryTool.js';
 
 export function getCoreSystemPrompt(userMemory?: string): string {
-  // if GEMINI_SYSTEM_MD is set (and not 0|false), override system prompt from file
-  // default path is .gemini/system.md but can be modified via custom path in GEMINI_SYSTEM_MD
+  // if WRITER_SYSTEM_MD is set (and not 0|false), override system prompt from file
+  // default path is .writer/system.md but can be modified via custom path in WRITER_SYSTEM_MD
   let systemMdEnabled = false;
-  let systemMdPath = path.join(GEMINI_CONFIG_DIR, 'system.md');
-  const systemMdVar = process.env.GEMINI_SYSTEM_MD?.toLowerCase();
+  let systemMdPath = path.join(WRITER_CONFIG_DIR, 'system.md');
+  const systemMdVar = process.env.WRITER_SYSTEM_MD?.toLowerCase();
   if (systemMdVar && !['0', 'false'].includes(systemMdVar)) {
     systemMdEnabled = true; // enable system prompt override
     if (!['1', 'true'].includes(systemMdVar)) {
-      systemMdPath = systemMdVar; // use custom path from GEMINI_SYSTEM_MD
+      systemMdPath = systemMdVar; // use custom path from WRITER_SYSTEM_MD
     }
     // require file to exist when override is enabled
     if (!fs.existsSync(systemMdPath)) {
@@ -280,13 +280,13 @@ Which direction intrigues you most? I can help develop any of these further whil
 Your core function is creative collaboration and manuscript development. Always read existing content before making suggestions to ensure consistency with the writer's established world, characters, and style. Prioritize the writer's creative vision while offering professional guidance to enhance their work. Never assume the contents of manuscripts - always use the available tools to understand the writer's project before providing assistance. Remember, you are a collaborative partner in the creative process.
 `.trim();
 
-  // if GEMINI_WRITE_SYSTEM_MD is set (and not 0|false), write base system prompt to file
-  const writeSystemMdVar = process.env.GEMINI_WRITE_SYSTEM_MD?.toLowerCase();
+  // if WRITER_WRITE_SYSTEM_MD is set (and not 0|false), write base system prompt to file
+  const writeSystemMdVar = process.env.WRITER_WRITE_SYSTEM_MD?.toLowerCase();
   if (writeSystemMdVar && !['0', 'false'].includes(writeSystemMdVar)) {
     if (['1', 'true'].includes(writeSystemMdVar)) {
-      fs.writeFileSync(systemMdPath, basePrompt); // write to default path, can be modified via GEMINI_SYSTEM_MD
+      fs.writeFileSync(systemMdPath, basePrompt); // write to default path, can be modified via WRITER_SYSTEM_MD
     } else {
-      fs.writeFileSync(writeSystemMdVar, basePrompt); // write to custom path from GEMINI_WRITE_SYSTEM_MD
+      fs.writeFileSync(writeSystemMdVar, basePrompt); // write to custom path from WRITER_WRITE_SYSTEM_MD
     }
   }
 

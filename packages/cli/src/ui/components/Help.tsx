@@ -69,9 +69,9 @@ export const Help: React.FC<Help> = ({ commands, writingProject }) => (
       </Text>{' '}
       to specify files for context (e.g.,{' '}
       <Text bold color={Colors.AccentPurple}>
-        @src/myFile.ts
+        @chapters/chapter1.md
       </Text>
-      ) to target specific files or folders.
+      ) to target specific manuscript files or folders.
     </Text>
     <Text color={Colors.Foreground}>
       <Text bold color={Colors.AccentPurple}>
@@ -83,11 +83,11 @@ export const Help: React.FC<Help> = ({ commands, writingProject }) => (
       </Text>{' '}
       (e.g.,{' '}
       <Text bold color={Colors.AccentPurple}>
-        !npm run start
+        !writer backup
       </Text>
       ) or use natural language (e.g.{' '}
       <Text bold color={Colors.AccentPurple}>
-        start server
+        show project status
       </Text>
       ).
     </Text>

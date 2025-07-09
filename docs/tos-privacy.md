@@ -1,6 +1,6 @@
-# Gemini CLI: Terms of Service and Privacy Notice
+# Writer CLI: Terms of Service and Privacy Notice
 
-Gemini CLI is an open-source tool that lets you interact with Google's powerful language models directly from your command-line interface. The Terms of Service and Privacy notices that apply to your usage of Gemini CLI depend on the type of account you use to authenticate with Google. See [quota and pricing](./quota-and-pricing.md) for details on the quota and pricing details that apply to your usage of Gemini CLI.
+Writer CLI is an open-source tool that lets you interact with Google's powerful language models directly from your command-line interface. The Terms of Service and Privacy notices that apply to your usage of Writer CLI depend on the type of account you use to authenticate with Google. See [quota and pricing](./quota-and-pricing.md) for details on the quota and pricing details that apply to your usage of Writer CLI.
 
 This article outlines the specific terms and privacy policies applicable for different auth methods.
 
@@ -8,7 +8,7 @@ This article outlines the specific terms and privacy policies applicable for dif
 
 For users who authenticate using their Google account to access Gemini Code Assist for individuals:
 
-- Terms of Service: Your use of Gemini CLI is governed by the general [Google Terms of Service](https://policies.google.com/terms?hl=en-US).
+- Terms of Service: Your use of Writer CLI is governed by the general [Google Terms of Service](https://policies.google.com/terms?hl=en-US).
 - Privacy Notice: The collection and use of your data are described in the [Gemini Code Assist Privacy Notice for Individuals](https://developers.google.com/gemini-code-assist/resources/privacy-notice-gemini-code-assist-individuals).
 
 ## 2. Gemini API Key (Using Gemini Developer [API](https://ai.google.dev/gemini-api/docs) a: Unpaid Service, b: Paid Service)
@@ -36,7 +36,7 @@ If you are using an API key with a Vertex AI Gen API backend:
 
 You may opt-out from sending Usage Statistics to Google data by following the instructions available here: [Usage Statistics Configuration](./cli/configuration.md#usage-statistics).
 
-## Frequently Asked Questions (FAQ) for Gemini CLI
+## Frequently Asked Questions (FAQ) for Writer CLI
 
 ### 1. Is my code, including prompts and answers, used to train Google's models?
 
@@ -48,7 +48,7 @@ This depends entirely on the type of auth method you use.
 
 ### 2. What are "Usage Statistics" and what does the opt-out control?
 
-The "Usage Statistics" setting is the single control for all optional data collection in the Gemini CLI. The data it collects depends on your account type:
+The "Usage Statistics" setting is the single control for all optional data collection in the Writer CLI. The data it collects depends on your account type:
 
 - **Auth method 1:** When enabled, this setting allows Google to collect both anonymous telemetry (like commands run and performance metrics) and **your prompts and answers** for model improvement.
 - **Auth method 2a:** When enabled, this setting allows Google to collect both anonymous telemetry (like commands run and performance metrics) and **your prompts and answers** for model improvement. When disabled we will use your data as described in the [How Google Uses Your Data](https://ai.google.dev/gemini-api/terms#data-use-unpaid).

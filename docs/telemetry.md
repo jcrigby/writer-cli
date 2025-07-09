@@ -1,14 +1,14 @@
-# Gemini CLI Observability Guide
+# Writer CLI Observability Guide
 
-Telemetry provides data about Gemini CLI's performance, health, and usage. By enabling it, you can monitor operations, debug issues, and optimize tool usage through traces, metrics, and structured logs.
+Telemetry provides data about Writer CLI's performance, health, and usage. By enabling it, you can monitor operations, debug issues, and optimize tool usage through traces, metrics, and structured logs.
 
-Gemini CLI's telemetry system is built on the **[OpenTelemetry] (OTEL)** standard, allowing you to send data to any compatible backend.
+Writer CLI's telemetry system is built on the **[OpenTelemetry] (OTEL)** standard, allowing you to send data to any compatible backend.
 
 [OpenTelemetry]: https://opentelemetry.io/
 
 ## Enabling telemetry
 
-You can enable telemetry in multiple ways. Configuration is primarily managed via the [`.gemini/settings.json` file](./cli/configuration.md) and environment variables, but CLI flags can override these settings for a specific session.
+You can enable telemetry in multiple ways. Configuration is primarily managed via the [`.writer/settings.json` file](./cli/configuration.md) and environment variables, but CLI flags can override these settings for a specific session.
 
 ### Order of precedence
 
@@ -23,9 +23,9 @@ The following lists the precedence for applying telemetry settings, with items l
 1.  **Environment variables:**
     - `OTEL_EXPORTER_OTLP_ENDPOINT`: Overrides `telemetry.otlpEndpoint`.
 
-1.  **Workspace settings file (`.gemini/settings.json`):** Values from the `telemetry` object in this project-specific file.
+1.  **Workspace settings file (`.writer/settings.json`):** Values from the `telemetry` object in this project-specific file.
 
-1.  **User settings file (`~/.gemini/settings.json`):** Values from the `telemetry` object in this global user file.
+1.  **User settings file (`~/.writer/settings.json`):** Values from the `telemetry` object in this global user file.
 
 1.  **Defaults:** applied if not set by any of the above.
     - `telemetry.enabled`: `false`
@@ -38,7 +38,7 @@ The `--target` argument to this script _only_ overrides the `telemetry.target` f
 
 ### Example settings
 
-The following code can be added to your workspace (`.gemini/settings.json`) or user (`~/.gemini/settings.json`) settings to enable telemetry and send the output to Google Cloud:
+The following code can be added to your workspace (`.writer/settings.json`) or user (`~/.writer/settings.json`) settings to enable telemetry and send the output to Google Cloud:
 
 ```json
 {
@@ -61,7 +61,7 @@ Learn more about OTEL exporter standard configuration in [documentation][otel-co
 
 ### Local
 
-Use the `npm run telemetry -- --target=local` command to automate the process of setting up a local telemetry pipeline, including configuring the necessary settings in your `.gemini/settings.json` file. The underlying script installs `otelcol-contrib` (the OpenTelemetry Collector) and `jaeger` (The Jaeger UI for viewing traces). To use it:
+Use the `npm run telemetry -- --target=local` command to automate the process of setting up a local telemetry pipeline, including configuring the necessary settings in your `.writer/settings.json` file. The underlying script installs `otelcol-contrib` (the OpenTelemetry Collector) and `jaeger` (The Jaeger UI for viewing traces). To use it:
 
 1.  **Run the command**:
     Execute the command from the root of the repository:
@@ -73,22 +73,22 @@ Use the `npm run telemetry -- --target=local` command to automate the process of
     The script will:
     - Download Jaeger and OTEL if needed.
     - Start a local Jaeger instance.
-    - Start an OTEL collector configured to receive data from Gemini CLI.
+    - Start an OTEL collector configured to receive data from Writer CLI.
     - Automatically enable telemetry in your workspace settings.
     - On exit, disable telemetry.
 
 1.  **View traces**:
-    Open your web browser and navigate to **http://localhost:16686** to access the Jaeger UI. Here you can inspect detailed traces of Gemini CLI operations.
+    Open your web browser and navigate to **http://localhost:16686** to access the Jaeger UI. Here you can inspect detailed traces of Writer CLI operations.
 
 1.  **Inspect logs and metrics**:
-    The script redirects the OTEL collector output (which includes logs and metrics) to `~/.gemini/tmp/<projectHash>/otel/collector.log`. The script will provide links to view and a command to tail your telemetry data (traces, metrics, logs) locally.
+    The script redirects the OTEL collector output (which includes logs and metrics) to `~/.writer/tmp/<projectHash>/otel/collector.log`. The script will provide links to view and a command to tail your telemetry data (traces, metrics, logs) locally.
 
 1.  **Stop the services**:
     Press `Ctrl+C` in the terminal where the script is running to stop the OTEL Collector and Jaeger services.
 
 ### Google Cloud
 
-Use the `npm run telemetry -- --target=gcp` command to automate setting up a local OpenTelemetry collector that forwards data to your Google Cloud project, including configuring the necessary settings in your `.gemini/settings.json` file. The underlying script installs `otelcol-contrib`. To use it:
+Use the `npm run telemetry -- --target=gcp` command to automate setting up a local OpenTelemetry collector that forwards data to your Google Cloud project, including configuring the necessary settings in your `.writer/settings.json` file. The underlying script installs `otelcol-contrib`. To use it:
 
 1.  **Prerequisites**:
     - Have a Google Cloud project ID.
@@ -108,32 +108,32 @@ Use the `npm run telemetry -- --target=gcp` command to automate setting up a loc
 
     The script will:
     - Download the `otelcol-contrib` binary if needed.
-    - Start an OTEL collector configured to receive data from Gemini CLI and export it to your specified Google Cloud project.
-    - Automatically enable telemetry and disable sandbox mode in your workspace settings (`.gemini/settings.json`).
+    - Start an OTEL collector configured to receive data from Writer CLI and export it to your specified Google Cloud project.
+    - Automatically enable telemetry and disable sandbox mode in your workspace settings (`.writer/settings.json`).
     - Provide direct links to view traces, metrics, and logs in your Google Cloud Console.
     - On exit (Ctrl+C), it will attempt to restore your original telemetry and sandbox settings.
 
-1.  **Run Gemini CLI:**
-    In a separate terminal, run your Gemini CLI commands. This generates telemetry data that the collector captures.
+1.  **Run Writer CLI:**
+    In a separate terminal, run your Writer CLI commands. This generates telemetry data that the collector captures.
 
 1.  **View telemetry in Google Cloud**:
     Use the links provided by the script to navigate to the Google Cloud Console and view your traces, metrics, and logs.
 
 1.  **Inspect local collector logs**:
-    The script redirects the local OTEL collector output to `~/.gemini/tmp/<projectHash>/otel/collector-gcp.log`. The script provides links to view and command to tail your collector logs locally.
+    The script redirects the local OTEL collector output to `~/.writer/tmp/<projectHash>/otel/collector-gcp.log`. The script provides links to view and command to tail your collector logs locally.
 
 1.  **Stop the service**:
     Press `Ctrl+C` in the terminal where the script is running to stop the OTEL Collector.
 
 ## Logs and metric reference
 
-The following section describes the structure of logs and metrics generated for Gemini CLI.
+The following section describes the structure of logs and metrics generated for Writer CLI.
 
 - A `sessionId` is included as a common attribute on all logs and metrics.
 
 ### Logs
 
-Logs are timestamped records of specific events. The following events are logged for Gemini CLI:
+Logs are timestamped records of specific events. The following events are logged for Writer CLI:
 
 - `gemini_cli.config`: This event occurs once at startup with the CLI's configuration.
   - **Attributes**:
@@ -193,7 +193,7 @@ Logs are timestamped records of specific events. The following events are logged
 
 ### Metrics
 
-Metrics are numerical measurements of behavior over time. The following metrics are collected for Gemini CLI:
+Metrics are numerical measurements of behavior over time. The following metrics are collected for Writer CLI:
 
 - `gemini_cli.session.count` (Counter, Int): Incremented once per CLI startup.
 

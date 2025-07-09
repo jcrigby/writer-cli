@@ -28,7 +28,7 @@ const USER_GEMINI_DIR = path.join(os.homedir(), '.gemini');
 // Project-level .gemini directory in the workspace
 const WORKSPACE_GEMINI_DIR = path.join(projectRoot, '.gemini');
 
-// Telemetry artifacts are stored in a hashed directory under the user's ~/.gemini/tmp
+// Telemetry artifacts are stored in a hashed directory under the user's ~/.writer/tmp
 export const OTEL_DIR = path.join(USER_GEMINI_DIR, 'tmp', projectHash, 'otel');
 export const BIN_DIR = path.join(OTEL_DIR, 'bin');
 
@@ -41,11 +41,11 @@ export const WORKSPACE_SETTINGS_FILE = path.join(
 export function getJson(url) {
   const tmpFile = path.join(
     os.tmpdir(),
-    `gemini-cli-releases-${Date.now()}.json`,
+    `writer-cli-releases-${Date.now()}.json`,
   );
   try {
     execSync(
-      `curl -sL -H "User-Agent: gemini-cli-dev-script" -o "${tmpFile}" "${url}"`,
+      `curl -sL -H "User-Agent: writer-cli-dev-script" -o "${tmpFile}" "${url}"`,
       { stdio: 'pipe' },
     );
     const content = fs.readFileSync(tmpFile, 'utf-8');
@@ -217,7 +217,7 @@ export async function ensureBinary(
 
   const downloadUrl = asset.browser_download_url;
   const tmpDir = fs.mkdtempSync(
-    path.join(os.tmpdir(), 'gemini-cli-telemetry-'),
+    path.join(os.tmpdir(), 'writer-cli-telemetry-'),
   );
   const archivePath = path.join(tmpDir, asset.name);
 

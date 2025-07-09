@@ -156,7 +156,7 @@ describe('useSlashCommandProcessor', () => {
   const getProcessorHook = (showToolDescriptions: boolean = false) => {
     const settings = {
       merged: {
-        contextFileName: 'GEMINI.md',
+        contextFileName: 'WRITER.md',
       },
     } as LoadedSettings;
     return renderHook(() =>
@@ -374,7 +374,7 @@ describe('useSlashCommandProcessor', () => {
       const settings = {
         merged: {
           selectedAuthType: 'test-auth-type',
-          contextFileName: 'GEMINI.md',
+          contextFileName: 'WRITER.md',
         },
       } as LoadedSettings;
 
@@ -527,7 +527,7 @@ describe('useSlashCommandProcessor', () => {
 *   **Memory Usage:** ${memoryUsage}
 `;
       let url =
-        'https://github.com/google-gemini/gemini-cli/issues/new?template=bug_report.yml';
+        'https://github.com/google-gemini/writer-cli/issues/new?template=bug_report.yml';
       if (description) {
         url += `&title=${encodeURIComponent(description)}`;
       }
@@ -705,8 +705,8 @@ describe('useSlashCommandProcessor', () => {
       expect(commandResult).toBe(true);
     });
 
-    it('should display only Gemini CLI tools (filtering out MCP tools)', async () => {
-      // Create mock tools - some with serverName property (MCP tools) and some without (Gemini CLI tools)
+    it('should display only Writer CLI tools (filtering out MCP tools)', async () => {
+      // Create mock tools - some with serverName property (MCP tools) and some without (Writer CLI tools)
       const mockTools = [
         { name: 'tool1', displayName: 'Tool1' },
         { name: 'tool2', displayName: 'Tool2' },
@@ -734,7 +734,7 @@ describe('useSlashCommandProcessor', () => {
       expect(commandResult).toBe(true);
     });
 
-    it('should display a message when no Gemini CLI tools are available', async () => {
+    it('should display a message when no Writer CLI tools are available', async () => {
       // Only MCP tools available
       const mockTools = [
         { name: 'mcp_tool1', serverName: 'mcp-server1' },
@@ -860,7 +860,7 @@ describe('useSlashCommandProcessor', () => {
         2,
         expect.objectContaining({
           type: MessageType.INFO,
-          text: `No MCP servers configured. Please open the following URL in your browser to view documentation:\nhttps://goo.gle/gemini-cli-docs-mcp`,
+          text: `No MCP servers configured. Please open the following URL in your browser to view documentation:\nhttps://goo.gle/writer-cli-docs-mcp`,
         }),
         expect.any(Number),
       );
@@ -887,11 +887,11 @@ describe('useSlashCommandProcessor', () => {
         2,
         expect.objectContaining({
           type: MessageType.INFO,
-          text: 'No MCP servers configured. Opening documentation in your browser: https://goo.gle/gemini-cli-docs-mcp',
+          text: 'No MCP servers configured. Opening documentation in your browser: https://goo.gle/writer-cli-docs-mcp',
         }),
         expect.any(Number),
       );
-      expect(open).toHaveBeenCalledWith('https://goo.gle/gemini-cli-docs-mcp');
+      expect(open).toHaveBeenCalledWith('https://goo.gle/writer-cli-docs-mcp');
       expect(commandResult).toBe(true);
     });
 

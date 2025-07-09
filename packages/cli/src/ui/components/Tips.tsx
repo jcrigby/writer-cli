@@ -15,7 +15,7 @@ interface TipsProps {
 }
 
 export const Tips: React.FC<TipsProps> = ({ config, writingProject }) => {
-  const geminiMdFileCount = config.getGeminiMdFileCount();
+  const writerMdFileCount = config.getWriterMdFileCount();
   
   if (writingProject) {
     // Writing-specific tips
@@ -45,17 +45,17 @@ export const Tips: React.FC<TipsProps> = ({ config, writingProject }) => {
       <Text color={Colors.Foreground}>
         2. Be specific for the best results.
       </Text>
-      {geminiMdFileCount === 0 && (
+      {writerMdFileCount === 0 && (
         <Text color={Colors.Foreground}>
           3. Create{' '}
           <Text bold color={Colors.AccentPurple}>
-            GEMINI.md
+            WRITER.md
           </Text>{' '}
-          files to customize your interactions with Gemini.
+          files to customize your interactions with Writer.
         </Text>
       )}
       <Text color={Colors.Foreground}>
-        {geminiMdFileCount === 0 ? '4.' : '3.'}{' '}
+        {writerMdFileCount === 0 ? '4.' : '3.'}{' '}
         <Text bold color={Colors.AccentPurple}>
           /help
         </Text>{' '}

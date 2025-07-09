@@ -25,9 +25,6 @@
   "files": [
     "dist"
   ],
-  "config": {
-    "sandboxImageUri": "gemini-cli-sandbox"
-  },
   "dependencies": {
     "writer-cli-core": "*",
     "@types/update-notifier": "^6.0.8",
@@ -36,7 +33,6 @@
     "dotenv": "^16.6.1",
     "gaxios": "^6.1.1",
     "glob": "^10.4.1",
-    "highlight.js": "^11.11.1",
     "ink": "^6.0.1",
     "ink-big-text": "^2.0.0",
     "ink-gradient": "^3.0.0",
@@ -44,7 +40,6 @@
     "ink-select-input": "^6.2.0",
     "ink-spinner": "^5.0.0",
     "ink-text-input": "^6.0.0",
-    "lowlight": "^3.3.0",
     "mammoth": "^1.8.0",
     "mime-types": "^2.1.4",
     "open": "^10.1.2",

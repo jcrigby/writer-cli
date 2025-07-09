@@ -207,7 +207,7 @@ async function connectAndDiscover(
   }
 
   const mcpClient = new Client({
-    name: 'gemini-cli-mcp-client',
+    name: 'writer-cli-mcp-client',
     version: '0.0.1',
   });
 

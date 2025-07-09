@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const SERVICE_NAME = 'gemini-cli';
+export const SERVICE_NAME = 'writer-cli';
 
 export const EVENT_USER_PROMPT = 'gemini_cli.user_prompt';
 export const EVENT_TOOL_CALL = 'gemini_cli.tool_call';

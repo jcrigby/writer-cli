@@ -33,7 +33,7 @@ describe('reportError', () => {
   });
 
   const getExpectedReportPath = (type: string) =>
-    `${MOCK_TMP_DIR}/gemini-client-error-${type}-${MOCK_TIMESTAMP}.json`;
+    `${MOCK_TMP_DIR}/writer-client-error-${type}-${MOCK_TIMESTAMP}.json`;
 
   it('should generate a report and log the path', async () => {
     const error = new Error('Test error');

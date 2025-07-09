@@ -308,7 +308,7 @@ writer analyze --pacing full-manuscript.md
 4. **Back Up**: Regular git commits or backup tags
 5. **Experiment**: Try different models for different tasks
 
-## Differences from Original Gemini CLI
+## Differences from Original Writer CLI
 
 - Multi-model support through OpenRouter
 - Writing-focused commands and workflows
@@ -319,7 +319,7 @@ writer analyze --pacing full-manuscript.md
 
 ## Contributing
 
-Contributions welcome! This is a fork of [Gemini CLI](https://github.com/google-gemini/gemini-cli) adapted for writers.
+Contributions welcome! This is a fork of [Writer CLI](https://github.com/google-gemini/gemini-cli) adapted for writers.
 
 ## License
 

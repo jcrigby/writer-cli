@@ -198,7 +198,7 @@ export const useSlashCommandProcessor = (
       {
         name: 'help',
         altName: '?',
-        description: 'for help on gemini-cli',
+        description: 'for help on writer-cli',
         action: (_mainCommand, _subCommand, _args) => {
           onDebugMessage('Opening help.');
           setShowHelp(true);
@@ -206,9 +206,9 @@ export const useSlashCommandProcessor = (
       },
       {
         name: 'docs',
-        description: 'open full Gemini CLI documentation in your browser',
+        description: 'open full Writer CLI documentation in your browser',
         action: async (_mainCommand, _subCommand, _args) => {
-          const docsUrl = 'https://goo.gle/gemini-cli-docs';
+          const docsUrl = 'https://goo.gle/writer-cli-docs';
           if (process.env.SANDBOX && process.env.SANDBOX !== 'sandbox-exec') {
             addMessage({
               type: MessageType.INFO,
@@ -332,7 +332,7 @@ export const useSlashCommandProcessor = (
           const serverNames = Object.keys(mcpServers);
 
           if (serverNames.length === 0) {
-            const docsUrl = 'https://goo.gle/gemini-cli-docs-mcp';
+            const docsUrl = 'https://goo.gle/writer-cli-docs-mcp';
             if (process.env.SANDBOX && process.env.SANDBOX !== 'sandbox-exec') {
               addMessage({
                 type: MessageType.INFO,
@@ -527,7 +527,7 @@ export const useSlashCommandProcessor = (
       },
       {
         name: 'tools',
-        description: 'list available Gemini CLI tools',
+        description: 'list available Writer CLI tools',
         action: async (_mainCommand, _subCommand, _args) => {
           // Check if the _subCommand includes a specific flag to control description visibility
           let useShowDescriptions = showToolDescriptions;
@@ -558,7 +558,7 @@ export const useSlashCommandProcessor = (
           // Filter out MCP tools by checking if they have a serverName property
           const geminiTools = tools.filter((tool) => !('serverName' in tool));
 
-          let message = 'Available Gemini CLI tools:\n\n';
+          let message = 'Available Writer CLI tools:\n\n';
 
           if (geminiTools.length > 0) {
             geminiTools.forEach((tool) => {
@@ -667,7 +667,7 @@ export const useSlashCommandProcessor = (
 `;
 
           let bugReportUrl =
-            'https://github.com/google-gemini/gemini-cli/issues/new?template=bug_report.yml&title={title}&info={info}';
+            'https://github.com/google-gemini/writer-cli/issues/new?template=bug_report.yml&title={title}&info={info}';
           const bugCommand = config?.getBugCommand();
           if (bugCommand?.urlTemplate) {
             bugReportUrl = bugCommand.urlTemplate;
@@ -1107,7 +1107,7 @@ export const useSlashCommandProcessor = (
             typeof actionResult === 'object' &&
             actionResult?.shouldScheduleTool
           ) {
-            return actionResult; // Return the object for useGeminiStream
+            return actionResult; // Return the object for useWriterStream
           }
           return true; // Command was handled, but no tool to schedule
         }

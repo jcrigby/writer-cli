@@ -24,7 +24,7 @@ import { ReadManyFilesTool } from '../tools/read-many-files.js';
 import {
   MemoryTool,
   setGeminiMdFilename,
-  GEMINI_CONFIG_DIR as GEMINI_DIR,
+  WRITER_CONFIG_DIR as GEMINI_DIR,
 } from '../tools/memoryTool.js';
 import { WebSearchTool } from '../tools/web-search.js';
 import { GeminiClient } from '../core/client.js';

@@ -10,7 +10,7 @@ import * as path from 'path';
 import { homedir } from 'os';
 import { bfsFileSearch } from './bfsFileSearch.js';
 import {
-  GEMINI_CONFIG_DIR,
+  WRITER_CONFIG_DIR,
   getAllGeminiMdFilenames,
 } from '../tools/memoryTool.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
@@ -94,7 +94,7 @@ async function getGeminiMdFilePathsInternal(
     const resolvedHome = path.resolve(userHomePath);
     const globalMemoryPath = path.join(
       resolvedHome,
-      GEMINI_CONFIG_DIR,
+      WRITER_CONFIG_DIR,
       geminiMdFilename,
     );
 
@@ -139,7 +139,7 @@ async function getGeminiMdFilePathsInternal(
 
       // Skip the global .gemini directory itself during upward scan from CWD,
       // as global is handled separately and explicitly first.
-      if (currentDir === path.join(resolvedHome, GEMINI_CONFIG_DIR)) {
+      if (currentDir === path.join(resolvedHome, WRITER_CONFIG_DIR)) {
         if (debugMode) {
           logger.debug(
             `Upward scan reached global config dir path, stopping upward search here: ${currentDir}`,
@@ -274,7 +274,7 @@ function concatenateInstructions(
 }
 
 /**
- * Loads hierarchical GEMINI.md files and concatenates their content.
+ * Loads hierarchical WRITER.md files and concatenates their content.
  * This function is intended for use by the server.
  */
 export async function loadServerHierarchicalMemory(
@@ -298,7 +298,7 @@ export async function loadServerHierarchicalMemory(
     extensionContextFilePaths,
   );
   if (filePaths.length === 0) {
-    if (debugMode) logger.debug('No GEMINI.md files found in hierarchy.');
+    if (debugMode) logger.debug('No WRITER.md files found in hierarchy.');
     return { memoryContent: '', fileCount: 0 };
   }
   const contentsWithPaths = await readGeminiMdFiles(filePaths, debugMode);

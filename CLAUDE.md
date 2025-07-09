@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-A writer-focused CLI tool built on the Gemini CLI foundation, designed to provide Claude's full writing capabilities while streamlining the creative writing workflow. This tool bridges the gap between Claude's web interface and a writer's need for robust file management, version control, and project organization.
+A writer-focused CLI tool built on the Writer CLI foundation, designed to provide Claude's full writing capabilities while streamlining the creative writing workflow. This tool bridges the gap between Claude's web interface and a writer's need for robust file management, version control, and project organization.
 
 ## Core Vision
 
@@ -18,7 +18,7 @@ Bring the full power of Claude's writing assistance directly to your writing env
 
 ## Architecture
 
-### Current Structure (Based on Gemini CLI)
+### Current Structure (Based on Writer CLI)
 ```
 packages/
 ├── cli/          # Terminal UI optimized for writing workflows
@@ -254,7 +254,7 @@ my-screenplay/
 ## Development Phases
 
 ### Phase 1: Foundation (Week 1-2)
-- [ ] Fork Gemini CLI and adapt for Claude API
+- [ ] Fork Writer CLI and adapt for Claude API
 - [ ] Create basic project initialization and configuration
 - [ ] Implement core writing commands (write, revise, suggest)
 - [ ] Basic file management and chapter navigation

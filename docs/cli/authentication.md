@@ -1,11 +1,11 @@
 # Authentication Setup
 
-The Gemini CLI requires you to authenticate with Google's AI services. On initial startup you'll need to configure **one** of the following authentication methods:
+The Writer CLI requires you to authenticate with Google's AI services. On initial startup you'll need to configure **one** of the following authentication methods:
 
 1.  **Login with Google (Gemini Code Assist):**
     - Use this option to log in with your google account.
-    - During initial startup, Gemini CLI will direct you to a webpage for authentication. Once authenticated, your credentials will be cached locally so the web login can be skipped on subsequent runs.
-    - Note that the web login must be done in a browser that can communicate with the machine Gemini CLI is being run from. (Specifically, the browser will be redirected to a localhost url that Gemini CLI will be listening on).
+    - During initial startup, Writer CLI will direct you to a webpage for authentication. Once authenticated, your credentials will be cached locally so the web login can be skipped on subsequent runs.
+    - Note that the web login must be done in a browser that can communicate with the machine Writer CLI is being run from. (Specifically, the browser will be redirected to a localhost url that Writer CLI will be listening on).
     - <a id="workspace-gca">Users may have to specify a GOOGLE_CLOUD_PROJECT if:</a>
       1. You have a Google Workspace account. Google Workspace is a paid service for businesses and organizations that provides a suite of productivity tools, including a custom email domain (e.g. your-name@your-company.com), enhanced security features, and administrative controls. These accounts are often managed by an employer or school.
       1. You have received a free Code Assist license through the [Google Developer Program](https://developers.google.com/program/plans-and-pricing) (including qualified Google Developer Experts)
@@ -77,15 +77,15 @@ The Gemini CLI requires you to authenticate with Google's AI services. On initia
 
 ### Persisting Environment Variables with `.env` Files
 
-You can create a **`.gemini/.env`** file in your project directory or in your home directory. Creating a plain **`.env`** file also works, but `.gemini/.env` is recommended to keep Gemini variables isolated from other tools.
+You can create a **`.writer/.env`** file in your project directory or in your home directory. Creating a plain **`.env`** file also works, but `.writer/.env` is recommended to keep Gemini variables isolated from other tools.
 
-Gemini CLI automatically loads environment variables from the **first** `.env` file it finds, using the following search order:
+Writer CLI automatically loads environment variables from the **first** `.env` file it finds, using the following search order:
 
 1. Starting in the **current directory** and moving upward toward `/`, for each directory it checks:
-   1. `.gemini/.env`
+   1. `.writer/.env`
    2. `.env`
 2. If no file is found, it falls back to your **home directory**:
-   - `~/.gemini/.env`
+   - `~/.writer/.env`
    - `~/.env`
 
 > **Important:** The search stops at the **first** file encountered—variables are **not merged** across multiple files.
@@ -96,14 +96,14 @@ Gemini CLI automatically loads environment variables from the **first** `.env` f
 
 ```bash
 mkdir -p .gemini
-echo 'GOOGLE_CLOUD_PROJECT="your-project-id"' >> .gemini/.env
+echo 'GOOGLE_CLOUD_PROJECT="your-project-id"' >> .writer/.env
 ```
 
 **User-wide settings** (available in every directory):
 
 ```bash
 mkdir -p ~/.gemini
-cat >> ~/.gemini/.env <<'EOF'
+cat >> ~/.writer/.env <<'EOF'
 GOOGLE_CLOUD_PROJECT="your-project-id"
 GEMINI_API_KEY="your-gemini-api-key"
 EOF

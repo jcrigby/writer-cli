@@ -18,7 +18,7 @@ import {
 } from 'ink';
 import { StreamingState, type HistoryItem, MessageType } from './types.js';
 import { useTerminalSize } from './hooks/useTerminalSize.js';
-import { useGeminiStream } from './hooks/useGeminiStream.js';
+import { useWriterStream } from './hooks/useWriterStream.js';
 import { useLoadingIndicator } from './hooks/useLoadingIndicator.js';
 import { useThemeCommand } from './hooks/useThemeCommand.js';
 import { useAuthCommand } from './hooks/useAuthCommand.js';
@@ -184,7 +184,7 @@ const App = ({ config, settings, startupWarnings = [], writingProject }: AppProp
     addItem(
       {
         type: MessageType.INFO,
-        text: 'Refreshing hierarchical memory (GEMINI.md or other context files)...',
+        text: 'Refreshing hierarchical memory (WRITER.md or other context files)...',
       },
       Date.now(),
     );
@@ -252,7 +252,7 @@ const App = ({ config, settings, startupWarnings = [], writingProject }: AppProp
           type: MessageType.INFO,
           text: `⚡ Slow response times detected. Automatically switching from ${currentModel} to ${fallbackModel} for faster responses for the remainder of this session.
 ⚡ To avoid this you can either upgrade to Standard tier. See: https://goo.gle/set-up-gemini-code-assist
-⚡ Or you can utilize a Gemini API Key. See: https://goo.gle/gemini-cli-docs-auth#gemini-api-key
+⚡ Or you can utilize a Gemini API Key. See: https://goo.gle/writer-cli-docs-auth#gemini-api-key
 ⚡ You can switch authentication methods by typing /auth`,
         },
         Date.now(),
@@ -409,7 +409,7 @@ const App = ({ config, settings, startupWarnings = [], writingProject }: AppProp
     initError,
     pendingHistoryItems: pendingGeminiHistoryItems,
     thought,
-  } = useGeminiStream(
+  } = useWriterStream(
     config.getGeminiClient(),
     history,
     addItem,

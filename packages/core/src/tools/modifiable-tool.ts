@@ -51,7 +51,7 @@ function createTempFilesForModify(
   file_path: string,
 ): { oldPath: string; newPath: string } {
   const tempDir = os.tmpdir();
-  const diffDir = path.join(tempDir, 'gemini-cli-tool-modify-diffs');
+  const diffDir = path.join(tempDir, 'writer-cli-tool-modify-diffs');
 
   if (!fs.existsSync(diffDir)) {
     fs.mkdirSync(diffDir, { recursive: true });
@@ -62,11 +62,11 @@ function createTempFilesForModify(
   const timestamp = Date.now();
   const tempOldPath = path.join(
     diffDir,
-    `gemini-cli-modify-${fileName}-old-${timestamp}${ext}`,
+    `writer-cli-modify-${fileName}-old-${timestamp}${ext}`,
   );
   const tempNewPath = path.join(
     diffDir,
-    `gemini-cli-modify-${fileName}-new-${timestamp}${ext}`,
+    `writer-cli-modify-${fileName}-new-${timestamp}${ext}`,
   );
 
   fs.writeFileSync(tempOldPath, currentContent, 'utf8');

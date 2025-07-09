@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-Writer CLI is a command-line interface tool that brings AI-powered writing assistance directly to the terminal. Built as a fork of Google's Gemini CLI, it transforms the general-purpose AI tool into a specialized writing environment supporting multiple AI models through OpenRouter, with features specifically designed for creative and technical writers.
+Writer CLI is a command-line interface tool that brings AI-powered writing assistance directly to the terminal. Built as a fork of Google's Writer CLI, it transforms the general-purpose AI tool into a specialized writing environment supporting multiple AI models through OpenRouter, with features specifically designed for creative and technical writers.
 
 ## Problem Statement
 
@@ -181,7 +181,7 @@ writer character develop "Jane" --from-previous
 ## Development Roadmap
 
 ### Phase 1: Foundation ✅
-- Fork Gemini CLI
+- Fork Writer CLI
 - OpenRouter integration
 - Basic writing commands
 - Project structure

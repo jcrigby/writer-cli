@@ -12,7 +12,7 @@ import * as os from 'os';
 import * as path from 'path';
 import { loadServerHierarchicalMemory } from './memoryDiscovery.js';
 import {
-  GEMINI_CONFIG_DIR,
+  WRITER_CONFIG_DIR,
   setGeminiMdFilename,
   getCurrentGeminiMdFilename,
   DEFAULT_CONTEXT_FILENAME,
@@ -55,7 +55,7 @@ describe('loadServerHierarchicalMemory', () => {
     mockOs.homedir.mockReturnValue(USER_HOME);
 
     // Define these here to use potentially reset/updated values from imports
-    GLOBAL_GEMINI_DIR = path.join(USER_HOME, GEMINI_CONFIG_DIR);
+    GLOBAL_GEMINI_DIR = path.join(USER_HOME, WRITER_CONFIG_DIR);
     GLOBAL_GEMINI_FILE = path.join(
       GLOBAL_GEMINI_DIR,
       getCurrentGeminiMdFilename(), // Use current filename
@@ -577,7 +577,7 @@ describe('loadServerHierarchicalMemory', () => {
   });
 
   it('should load extension context file paths', async () => {
-    const extensionFilePath = '/test/extensions/ext1/GEMINI.md';
+    const extensionFilePath = '/test/extensions/ext1/WRITER.md';
     mockFs.access.mockImplementation(async (p) => {
       if (p === extensionFilePath) {
         return undefined;
