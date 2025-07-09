@@ -27,7 +27,7 @@ import { ReadManyFilesTool } from '../tools/read-many-files.js';
 import { getResponseText } from '../utils/generateContentResponseUtilities.js';
 import { checkNextSpeaker } from '../utils/nextSpeakerChecker.js';
 import { reportError } from '../utils/errorReporting.js';
-import { GeminiChat } from './geminiChat.js';
+import { WriterChat } from './writerChat.js';
 import { retryWithBackoff } from '../utils/retry.js';
 import { getErrorMessage } from '../utils/errors.js';
 import { tokenLimit } from './tokenLimits.js';
@@ -46,7 +46,7 @@ function isThinkingSupported(model: string) {
 }
 
 export class WriterClient {
-  private chat?: GeminiChat;
+  private chat?: WriterChat;
   private contentGenerator?: ContentGenerator;
   private model: string;
   private embeddingModel: string;
@@ -85,7 +85,7 @@ export class WriterClient {
     this.getChat().addHistory(content);
   }
 
-  getChat(): GeminiChat {
+  getChat(): WriterChat {
     if (!this.chat) {
       throw new Error('Chat not initialized');
     }
@@ -168,7 +168,7 @@ export class WriterClient {
     return initialParts;
   }
 
-  private async startChat(extraHistory?: Content[]): Promise<GeminiChat> {
+  private async startChat(extraHistory?: Content[]): Promise<WriterChat> {
     const envParts = await this.getEnvironment();
     const toolRegistry = await this.config.getToolRegistry();
     const toolDeclarations = toolRegistry.getFunctionDeclarations();
@@ -195,7 +195,7 @@ export class WriterClient {
             },
           }
         : this.generateContentConfig;
-      return new GeminiChat(
+      return new WriterChat(
         this.config,
         this.getContentGenerator(),
         {
@@ -498,8 +498,9 @@ export class WriterClient {
    * Uses a fallback handler if provided by the config, otherwise returns null.
    */
   private async handleFlashFallback(authType?: string): Promise<string | null> {
-    // Only handle fallback for OAuth users
-    if (authType !== AuthType.LOGIN_WITH_GOOGLE) {
+    // Only handle fallback for OAuth users - but LOGIN_WITH_GOOGLE is no longer supported
+    // Skip fallback for OpenRouter since it's the only auth type
+    if (authType !== AuthType.USE_OPENROUTER) {
       return null;
     }
 

@@ -75,7 +75,7 @@ describe('loggers', () => {
         getContentGeneratorConfig: () => ({
           model: 'test-model',
           apiKey: 'test-api-key',
-          authType: AuthType.USE_VERTEX_AI,
+          authType: AuthType.USE_OPENROUTER,
         }),
         getTelemetryEnabled: () => true,
         getUsageStatisticsEnabled: () => true,

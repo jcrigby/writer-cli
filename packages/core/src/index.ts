@@ -10,19 +10,14 @@ export * from './config/config.js';
 // Export Core Logic
 export * from './core/client.js';
 export * from './core/contentGenerator.js';
-export * from './core/geminiChat.js';
+export * from './core/writerChat.js';
 export * from './core/logger.js';
 export * from './core/prompts.js';
 export * from './core/tokenLimits.js';
 export * from './core/turn.js';
-export * from './core/geminiRequest.js';
+export * from './core/writerRequest.js';
 export * from './core/coreToolScheduler.js';
 export * from './core/nonInteractiveToolExecutor.js';
-
-export * from './code_assist/codeAssist.js';
-export * from './code_assist/oauth2.js';
-export * from './code_assist/server.js';
-export * from './code_assist/types.js';
 
 // Export utilities
 export * from './utils/paths.js';
@@ -49,7 +44,18 @@ export * from './tools/glob.js';
 export * from './tools/edit.js';
 export * from './tools/write-file.js';
 export * from './tools/web-fetch.js';
-export * from './tools/memoryTool.js';
+export {
+  MemoryTool,
+  setGeminiMdFilename,
+  getCurrentGeminiMdFilename,
+  getAllGeminiMdFilenames,
+  setWriterMdFilename,
+  getCurrentWriterMdFilename,
+  getAllWriterMdFilenames,
+  WRITER_CONFIG_DIR,
+  DEFAULT_CONTEXT_FILENAME,
+  MEMORY_SECTION_HEADER,
+} from './tools/memoryTool.js';
 export * from './tools/shell.js';
 export * from './tools/web-search.js';
 export * from './tools/read-many-files.js';

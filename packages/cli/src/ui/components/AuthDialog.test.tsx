@@ -17,7 +17,7 @@ describe('AuthDialog', () => {
     const settings: LoadedSettings = new LoadedSettings(
       {
         settings: {
-          selectedAuthType: AuthType.USE_GEMINI,
+          selectedAuthType: AuthType.USE_OPENROUTER,
         },
         path: '',
       },
@@ -79,7 +79,7 @@ describe('AuthDialog', () => {
     const settings: LoadedSettings = new LoadedSettings(
       {
         settings: {
-          selectedAuthType: AuthType.USE_GEMINI,
+          selectedAuthType: AuthType.USE_OPENROUTER,
         },
         path: '',
       },

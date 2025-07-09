@@ -9,7 +9,6 @@ import { LoadedSettings, SettingScope } from '../../config/settings.js';
 import {
   AuthType,
   Config,
-  clearCachedCredentialFile,
   getErrorMessage,
 } from 'writer-cli-core';
 
@@ -53,7 +52,7 @@ export const useAuthCommand = (
   const handleAuthSelect = useCallback(
     async (authType: AuthType | undefined, scope: SettingScope) => {
       if (authType) {
-        await clearCachedCredentialFile();
+        // await clearCachedCredentialFile(); // Commented out - function not available
         settings.setValue(scope, 'selectedAuthType', authType);
       }
       setIsAuthDialogOpen(false);

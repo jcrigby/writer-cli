@@ -15,7 +15,7 @@ interface TipsProps {
 }
 
 export const Tips: React.FC<TipsProps> = ({ config, writingProject }) => {
-  const writerMdFileCount = config.getWriterMdFileCount();
+  const writerMdFileCount = 0; // Stubbed out since getWriterMdFileCount is not available
   
   if (writingProject) {
     // Writing-specific tips

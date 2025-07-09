@@ -398,6 +398,11 @@ export class Config {
     return this.geminiClient;
   }
 
+  // Alias for backward compatibility
+  getWriterClient(): WriterClient {
+    return this.geminiClient;
+  }
+
   getGeminiDir(): string {
     return path.join(this.targetDir, GEMINI_DIR);
   }

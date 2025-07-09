@@ -25,11 +25,8 @@ const PrivacyNoticeText = ({
   const authType = config.getContentGeneratorConfig()?.authType;
 
   switch (authType) {
-    case AuthType.USE_GEMINI:
-      return <GeminiPrivacyNotice onExit={onExit} />;
-    case AuthType.USE_VERTEX_AI:
+    case AuthType.USE_OPENROUTER:
       return <CloudPaidPrivacyNotice onExit={onExit} />;
-    case AuthType.LOGIN_WITH_GOOGLE:
     default:
       return <CloudFreePrivacyNotice config={config} onExit={onExit} />;
   }

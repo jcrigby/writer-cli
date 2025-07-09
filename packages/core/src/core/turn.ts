@@ -22,7 +22,7 @@ import {
   UnauthorizedError,
   toFriendlyError,
 } from '../utils/errors.js';
-import { GeminiChat } from './geminiChat.js';
+import { WriterChat } from './writerChat.js';
 
 // Define a structure for tools passed to the server
 export interface ServerTool {
@@ -143,7 +143,7 @@ export class Turn {
   readonly pendingToolCalls: ToolCallRequestInfo[];
   private debugResponses: GenerateContentResponse[];
 
-  constructor(private readonly chat: GeminiChat) {
+  constructor(private readonly chat: WriterChat) {
     this.pendingToolCalls = [];
     this.debugResponses = [];
   }

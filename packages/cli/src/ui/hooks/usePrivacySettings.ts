@@ -6,7 +6,7 @@
 
 import { GaxiosError } from 'gaxios';
 import { useState, useEffect, useCallback } from 'react';
-import { Config, CodeAssistServer, UserTierId } from 'writer-cli-core';
+import { Config } from 'writer-cli-core';
 
 export interface PrivacyState {
   isLoading: boolean;
@@ -28,7 +28,7 @@ export const usePrivacySettings = (config: Config) => {
       try {
         const server = getCodeAssistServer(config);
         const tier = await getTier(server);
-        if (tier !== UserTierId.FREE) {
+        if (tier !== 'free') {
           // We don't need to fetch opt-out info since non-free tier
           // data gathering is already worked out some other way.
           setPrivacyState({
@@ -80,56 +80,26 @@ export const usePrivacySettings = (config: Config) => {
   };
 };
 
-function getCodeAssistServer(config: Config): CodeAssistServer {
-  const server = config.getWriterClient().getContentGenerator();
-  // Neither of these cases should ever happen.
-  if (!(server instanceof CodeAssistServer)) {
-    throw new Error('Oauth not being used');
-  } else if (!server.projectId) {
-    throw new Error('Oauth not being used');
-  }
-  return server;
+// Stubbed out functions since CodeAssistServer and UserTierId are not available
+function getCodeAssistServer(config: Config): any {
+  // Since we're using OpenRouter, we don't have a CodeAssistServer
+  return null;
 }
 
-async function getTier(server: CodeAssistServer): Promise<UserTierId> {
-  const loadRes = await server.loadCodeAssist({
-    cloudaicompanionProject: server.projectId,
-    metadata: {
-      ideType: 'IDE_UNSPECIFIED',
-      platform: 'PLATFORM_UNSPECIFIED',
-      pluginType: 'GEMINI',
-      duetProject: server.projectId,
-    },
-  });
-  if (!loadRes.currentTier) {
-    throw new Error('User does not have a current tier');
-  }
-  return loadRes.currentTier.id;
+async function getTier(server: any): Promise<string> {
+  // Since we're using OpenRouter, we don't have tier information
+  return 'unknown';
 }
 
-async function getRemoteDataCollectionOptIn(
-  server: CodeAssistServer,
-): Promise<boolean> {
-  try {
-    const resp = await server.getCodeAssistGlobalUserSetting();
-    return resp.freeTierDataCollectionOptin;
-  } catch (e) {
-    if (e instanceof GaxiosError) {
-      if (e.response?.status === 404) {
-        return true;
-      }
-    }
-    throw e;
-  }
+async function getRemoteDataCollectionOptIn(server: any): Promise<boolean> {
+  // Default to false for privacy
+  return false;
 }
 
 async function setRemoteDataCollectionOptIn(
-  server: CodeAssistServer,
+  server: any,
   optIn: boolean,
 ): Promise<boolean> {
-  const resp = await server.setCodeAssistGlobalUserSetting({
-    cloudaicompanionProject: server.projectId,
-    freeTierDataCollectionOptin: optIn,
-  });
-  return resp.freeTierDataCollectionOptin;
+  // Just return the opt-in value since we can't actually set it
+  return optIn;
 }

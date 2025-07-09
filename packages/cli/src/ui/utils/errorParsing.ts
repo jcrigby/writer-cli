@@ -45,15 +45,7 @@ function isStructuredError(error: unknown): error is StructuredError {
 
 function getRateLimitMessage(authType?: AuthType | string): string {
   switch (authType) {
-    case AuthType.LOGIN_WITH_GOOGLE:
-      return RATE_LIMIT_ERROR_MESSAGE_GOOGLE;
-    case AuthType.USE_GEMINI:
-      return RATE_LIMIT_ERROR_MESSAGE_USE_GEMINI;
-    case AuthType.USE_VERTEX_AI:
-      return RATE_LIMIT_ERROR_MESSAGE_VERTEX;
     case AuthType.USE_OPENROUTER:
-    case AuthType.USE_ANTHROPIC:
-    case AuthType.USE_OPENAI:
       return 'Please wait and try again later. Check your API key limits or upgrade your plan.';
     default:
       return RATE_LIMIT_ERROR_MESSAGE_DEFAULT;

@@ -4,10 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const shortAsciiLogo = writerShortLogo;
-
-export const longAsciiLogo = writerLongLogo;
-
 export const writerLongLogo = `
 ██     ██ ██████  ██ ████████ ███████ ██████  
 ██     ██ ██   ██ ██    ██    ██      ██   ██ 
@@ -21,3 +17,7 @@ export const writerShortLogo = `
 ██  █  ██ ██████  ██    ██    █████   ██████  
  ███ ███  ██   ██ ██    ██    ███████ ██   ██ 
 `;
+
+export const shortAsciiLogo = writerShortLogo;
+
+export const longAsciiLogo = writerLongLogo;

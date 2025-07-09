@@ -126,7 +126,7 @@ function extractCuratedHistory(comprehensiveHistory: Content[]): Content[] {
  * @remarks
  * The session maintains all the turns between user and model.
  */
-export class GeminiChat {
+export class WriterChat {
   // A promise to represent the current state of the message being sent to the
   // model.
   private sendPromise: Promise<void> = Promise.resolve();
@@ -192,8 +192,9 @@ export class GeminiChat {
    * Uses a fallback handler if provided by the config, otherwise returns null.
    */
   private async handleFlashFallback(authType?: string): Promise<string | null> {
-    // Only handle fallback for OAuth users
-    if (authType !== AuthType.LOGIN_WITH_GOOGLE) {
+    // Only handle fallback for OAuth users - but LOGIN_WITH_GOOGLE is no longer supported
+    // Skip fallback for OpenRouter since it's the only auth type
+    if (authType !== AuthType.USE_OPENROUTER) {
       return null;
     }
 

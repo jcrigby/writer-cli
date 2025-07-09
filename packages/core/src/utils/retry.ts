@@ -93,9 +93,11 @@ export async function retryWithBackoff<T>(
         consecutive429Count = 0;
       }
 
-      // OpenRouter doesn't support OAuth, so no fallback logic is needed
-      // Removed LOGIN_WITH_GOOGLE fallback logic as it's not supported
-      if (false) {
+      // If we have persistent 429s and a fallback callback
+      if (
+        consecutive429Count >= 2 &&
+        onPersistent429
+      ) {
         try {
           const fallbackModel = await onPersistent429(authType);
           if (fallbackModel) {

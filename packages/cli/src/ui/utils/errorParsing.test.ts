@@ -29,24 +29,18 @@ describe('parseAndFormatApiError', () => {
     expect(result).toContain('Your request has been rate limited');
   });
 
-  it('should format a 429 API error with the personal message', () => {
+  it('should format a 429 API error with the OpenRouter message', () => {
     const errorMessage =
       'got status: 429 Too Many Requests. {"error":{"code":429,"message":"Rate limit exceeded","status":"RESOURCE_EXHAUSTED"}}';
     const result = parseAndFormatApiError(
       errorMessage,
-      AuthType.LOGIN_WITH_GOOGLE,
+      AuthType.USE_OPENROUTER,
     );
     expect(result).toContain('[API Error: Rate limit exceeded');
-    expect(result).toContain(enterpriseMessage);
+    expect(result).toContain('Check your API key limits or upgrade your plan');
   });
 
-  it('should format a 429 API error with the vertex message', () => {
-    const errorMessage =
-      'got status: 429 Too Many Requests. {"error":{"code":429,"message":"Rate limit exceeded","status":"RESOURCE_EXHAUSTED"}}';
-    const result = parseAndFormatApiError(errorMessage, AuthType.USE_VERTEX_AI);
-    expect(result).toContain('[API Error: Rate limit exceeded');
-    expect(result).toContain(vertexMessage);
-  });
+  // Removed test for USE_VERTEX_AI as it's no longer supported
 
   it('should return the original message if it is not a JSON error', () => {
     const errorMessage = 'This is a plain old error message';
@@ -87,9 +81,9 @@ describe('parseAndFormatApiError', () => {
       },
     });
 
-    const result = parseAndFormatApiError(errorMessage, AuthType.USE_GEMINI);
+    const result = parseAndFormatApiError(errorMessage, AuthType.USE_OPENROUTER);
     expect(result).toContain('Gemini 2.5 Pro Preview');
-    expect(result).toContain(geminiMessage);
+    expect(result).toContain('Check your API key limits or upgrade your plan');
   });
 
   it('should format a StructuredError', () => {
@@ -101,14 +95,14 @@ describe('parseAndFormatApiError', () => {
     expect(parseAndFormatApiError(error)).toBe(expected);
   });
 
-  it('should format a 429 StructuredError with the vertex message', () => {
+  it('should format a 429 StructuredError with the OpenRouter message', () => {
     const error: StructuredError = {
       message: 'Rate limit exceeded',
       status: 429,
     };
-    const result = parseAndFormatApiError(error, AuthType.USE_VERTEX_AI);
+    const result = parseAndFormatApiError(error, AuthType.USE_OPENROUTER);
     expect(result).toContain('[API Error: Rate limit exceeded]');
-    expect(result).toContain(vertexMessage);
+    expect(result).toContain('Check your API key limits or upgrade your plan');
   });
 
   it('should handle an unknown error type', () => {

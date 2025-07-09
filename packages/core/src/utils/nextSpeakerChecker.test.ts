@@ -9,7 +9,7 @@ import { Content, GoogleGenAI, Models } from '@google/genai';
 import { WriterClient } from '../core/client.js';
 import { Config } from '../config/config.js';
 import { checkNextSpeaker, NextSpeakerResponse } from './nextSpeakerChecker.js';
-import { GeminiChat } from '../core/geminiChat.js';
+import { WriterChat } from '../core/writerChat.js';
 
 // Mock WriterClient and Config constructor
 vi.mock('../core/client.js');
@@ -41,7 +41,7 @@ vi.mock('@google/genai', async () => {
 });
 
 describe('checkNextSpeaker', () => {
-  let chatInstance: GeminiChat;
+  let chatInstance: WriterChat;
   let mockWriterClient: WriterClient;
   let MockConfig: Mock;
   const abortSignal = new AbortController().signal;
@@ -67,8 +67,8 @@ describe('checkNextSpeaker', () => {
     vi.mocked(mockModelsInstance.generateContent).mockReset();
     vi.mocked(mockModelsInstance.generateContentStream).mockReset();
 
-    // GeminiChat will receive the mocked instances via the mocked GoogleGenAI constructor
-    chatInstance = new GeminiChat(
+    // WriterChat will receive the mocked instances via the mocked GoogleGenAI constructor
+    chatInstance = new WriterChat(
       mockConfigInstance,
       mockModelsInstance, // This is the instance returned by mockGoogleGenAIInstance.getGenerativeModel
       {},

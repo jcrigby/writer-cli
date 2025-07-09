@@ -12,7 +12,7 @@ import { WriterMessage } from './messages/WriterMessage.js';
 import { InfoMessage } from './messages/InfoMessage.js';
 import { ErrorMessage } from './messages/ErrorMessage.js';
 import { ToolGroupMessage } from './messages/ToolGroupMessage.js';
-import { WriterMessageContent } from './messages/WriterMessageContent.js';
+import { WriterMessageContent } from './messages/GeminiMessageContent.js';
 import { CompressionMessage } from './messages/CompressionMessage.js';
 import { Box } from 'ink';
 import { AboutBox } from './AboutBox.js';

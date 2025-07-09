@@ -97,6 +97,12 @@ function ensureNewlineSeparation(currentContent: string): string {
   return '\n\n';
 }
 
+// Legacy exports for backward compatibility
+export const setGeminiMdFilename = setWriterMdFilename;
+export const getCurrentGeminiMdFilename = getCurrentWriterMdFilename;
+export const getAllGeminiMdFilenames = getAllWriterMdFilenames;
+export const GEMINI_DIR = WRITER_CONFIG_DIR;
+
 export class MemoryTool extends BaseTool<SaveMemoryParams, ToolResult> {
   static readonly Name: string = memoryToolSchemaData.name;
   constructor() {

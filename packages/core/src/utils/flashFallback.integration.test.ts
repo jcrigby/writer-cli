@@ -78,14 +78,14 @@ describe('Flash Fallback Integration', () => {
         return status === 429;
       },
       onPersistent429: mockFallbackHandler,
-      authType: AuthType.LOGIN_WITH_GOOGLE,
+      authType: AuthType.USE_OPENROUTER,
     });
 
     // Verify fallback was triggered
     expect(fallbackCalled).toBe(true);
     expect(fallbackModel).toBe(DEFAULT_GEMINI_FLASH_MODEL);
     expect(mockFallbackHandler).toHaveBeenCalledWith(
-      AuthType.LOGIN_WITH_GOOGLE,
+      AuthType.USE_OPENROUTER,
     );
     expect(result).toBe('success after fallback');
     // Should have: 2 failures, then fallback triggered, then 1 success after retry reset
@@ -115,7 +115,7 @@ describe('Flash Fallback Integration', () => {
           return status === 429;
         },
         onPersistent429: mockFallbackHandler,
-        authType: AuthType.USE_GEMINI, // API key auth type
+        authType: AuthType.USE_OPENROUTER, // API key auth type
       });
     } catch (error) {
       // Expected to throw after max attempts
