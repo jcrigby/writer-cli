@@ -151,15 +151,37 @@ Transform chaotic AI chat exports into organized, project-based writing archives
 
 ### 2. Content Classification System
 
-**Writing Detection Algorithm**
+**Hybrid Classification Pipeline**
+The system uses a two-stage approach combining fast rule-based filtering with AI-powered classification for optimal accuracy and cost efficiency.
+
+**Stage 1: Rule-Based Pre-Filter**
 ```
-Scoring factors:
-- Creative writing keywords (character, plot, scene, dialogue)
-- Literary terms (metaphor, theme, narrative, voice)
-- Writing process terms (draft, revision, feedback, edit)
-- Length and structure indicators
-- Context continuity across messages
+Fast elimination of obvious non-writing content:
+- Code patterns (functions, classes, imports, syntax)
+- Mathematical content (equations, calculations)  
+- System messages and error outputs
+- Very short fragments (< 50 characters)
+- Non-English content (if specified)
 ```
+
+**Stage 2: AI Classification**
+```
+LLM-powered analysis for nuanced content detection:
+- Context-aware writing identification
+- Genre classification (fiction, non-fiction, technical, etc.)
+- Quality assessment (fragment vs substantial work)
+- Character/plot element recognition
+- Writing development tracking across conversations
+```
+
+**Dynamic Model Selection & Cost Optimization**
+The system automatically discovers and validates the most cost-effective AI models through OpenRouter's live pricing API:
+
+1. **Real-time Pricing Query**: Fetches current model costs from OpenRouter
+2. **Accuracy Validation**: Tests cheapest models against known writing samples  
+3. **Cost Estimation**: Calculates total processing cost before execution
+4. **Smart Recommendation**: Suggests optimal model balancing accuracy vs cost
+5. **User Approval**: Transparent cost/accuracy tradeoffs with user consent
 
 **Content Categories**
 - **Fiction Writing**: Novels, short stories, creative pieces
