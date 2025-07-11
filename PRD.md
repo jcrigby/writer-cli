@@ -204,6 +204,72 @@ writer character develop "Jane" --from-previous
 - Cloud sync
 - Mobile companion
 
+### Phase 5: Import/Migration Tools (Future)
+- **LLM Export Importer**: Standalone tool to extract conversations from vendor exports
+  - Support for ChatGPT, Claude.ai, Gemini, Perplexity export formats
+  - Parse gynormous JSON exports to extract writing-related conversations
+  - Filter and organize by project/topic
+  - Convert conversations to Writer CLI projects
+  - Preserve context and writing history
+- **Cross-Platform Migration**: Import from Scrivener, Google Docs, etc.
+- **Bulk Import**: Process multiple export files at once
+
+## Future Feature: LLM Export Importer
+
+### Problem
+Writers often have work-in-progress content scattered across multiple AI chat interfaces (ChatGPT, Claude.ai, Gemini, etc.). While these platforms offer export functionality, the exports are:
+- Manual and cumbersome to initiate
+- Delivered as massive JSON files via email links
+- Difficult to parse and extract useful content from
+- Not organized by project or writing topic
+
+### Proposed Solution
+A standalone tool (separate from Writer CLI) that:
+
+#### Core Functionality
+- **Multi-Format Parser**: Handles export formats from major LLM vendors
+- **Content Extraction**: Intelligently identifies writing-related conversations
+- **Project Detection**: Groups related conversations by topic/project
+- **Conversion Pipeline**: Transforms conversations into Writer CLI projects
+
+#### Technical Approach
+```
+llm-export-importer/
+├── parsers/
+│   ├── chatgpt.js      # OpenAI export format
+│   ├── claude.js       # Anthropic export format  
+│   ├── gemini.js       # Google export format
+│   └── perplexity.js   # Perplexity export format
+├── extractors/
+│   ├── writing.js      # Identify writing content
+│   ├── context.js      # Extract character/plot info
+│   └── metadata.js     # Timestamps, topics
+└── converters/
+    └── writer-cli.js   # Convert to Writer CLI format
+```
+
+#### User Workflow
+```bash
+# Standalone tool usage
+llm-import --file claude-export-2024.json --type claude
+llm-import --dir ~/Downloads/ai-exports/ --auto-detect
+
+# Creates organized output
+exports/
+├── novel-project/
+│   ├── chapters/
+│   ├── characters/
+│   └── research/
+└── blog-posts/
+    └── drafts/
+```
+
+#### Benefits
+- Preserves valuable writing work from chat sessions
+- Unifies scattered content into organized projects
+- Maintains context and development history
+- Enables migration from chat-based to project-based workflow
+
 ## Technical Debt & Risks
 
 ### Current Limitations
